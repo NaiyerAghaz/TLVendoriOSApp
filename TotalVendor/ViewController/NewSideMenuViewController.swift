@@ -149,8 +149,12 @@ class NewSideMenuViewController: UIViewController {
         
     }
     @IBAction func vendorTimeOffTapped (_ sender: Any){
-        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "VendorTimeOffViewController") as! VendorTimeOffViewController
+        self.navigationController?.pushViewController(vc, animated: true)
+            
     }
+    
+    
     @IBAction func vendorTimeFinishedTapped (_ sender: Any){
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "VendorTimeFinishedViewController") as! VendorTimeFinishedViewController
         self.navigationController?.pushViewController(vc, animated: true)

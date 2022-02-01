@@ -99,6 +99,7 @@ class NotificationViewController: UIViewController {
 }
 extension NotificationViewController :UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("APII NOTIFICATION DATA COUNT IS \(self.apiNotificationDetailResponseModel?.notificationsByUsername?.count ?? 0)")
         return self.apiNotificationDetailResponseModel?.notificationsByUsername?.count ?? 0
     }
     

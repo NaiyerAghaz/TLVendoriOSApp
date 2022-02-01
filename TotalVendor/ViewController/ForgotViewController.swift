@@ -43,7 +43,7 @@ extension ForgotViewController {
         SwiftLoader.show(animated: true)
         NetworkLayer.shared.postRequest(url:APIs.FORGOT_PASSWORD, parameters: parameters) { response in
             print("response ======> \(response)")
-            
+            print("FORGOT PASSWORD URL IS \(APIs.FORGOT_PASSWORD)and parameter is \(parameters)")
             var responseData = response as!NSArray
             var ResponseDic = responseData[0] as! NSDictionary
             if(ResponseDic["Status"] as! Int == 2){

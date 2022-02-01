@@ -226,6 +226,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             
             if type != nil {
                // let dict = convertToDictionary(text: payload!)
+                /*
                 if type == "tokenupdate" {
 //                    if isLogoutPressed {
 //                        isLogoutPressed = false
@@ -248,6 +249,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //                    }
                     
                 }
+                
+                */
             }
         }
     
