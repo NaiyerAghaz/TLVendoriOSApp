@@ -7,12 +7,41 @@
 
 import UIKit
 import Alamofire
+//1 is Onsite Interpretation 
+//2. Is Telephonic Conference
+//13 is Virtual meeting
 
 class TelephoneConferenceDetailsVC: UIViewController {
-    @IBOutlet weak var interpreterNameLbl: UILabel!
-    @IBOutlet weak var customerNameLbl: UILabel!
-    @IBOutlet weak var specialRequestsView: UIView!
     
+    @IBOutlet weak var interpreterNameView: UIView!
+    
+    
+    var appointmentTYPE = "Telephone Conference"
+    var urlToOpen = ""
+    
+    @IBOutlet weak var authenticationCodeView: UIView!
+    
+    @IBOutlet weak var serviceTypeView: UIView!
+    
+    @IBOutlet weak var dateView: UIView!
+    
+    @IBOutlet weak var timeView: UIView!
+    
+    @IBOutlet weak var contactView: UIView!
+    
+    @IBOutlet weak var languageView: UIView!
+    
+    @IBOutlet weak var languageLabel: UILabel!
+    
+    @IBOutlet weak var descriptionView: UIView!
+    
+    @IBOutlet weak var conCallsView: UIView!
+    
+    @IBOutlet weak var conCallsLabel: UILabel!
+    
+    @IBOutlet weak var statusView: UIView!
+    @IBOutlet weak var interpreterNameLbl: UILabel!
+//    @IBOutlet weak var specialRequestsView: UIView!
     @IBOutlet weak var casePatientInitialView: UIView!
     
     @IBOutlet weak var casePatientView: UIView!
@@ -22,12 +51,16 @@ class TelephoneConferenceDetailsVC: UIViewController {
     @IBOutlet weak var dateLbl: UILabel!
     @IBOutlet weak var timeLbl: UILabel!
     @IBOutlet weak var statusLbl: UILabel!
-    @IBOutlet weak var specialRequestsLbl: UILabel!
+//    @IBOutlet weak var specialRequestsLbl: UILabel!
+    @IBOutlet weak var linkView: UIView!
+    @IBOutlet weak var linkLbl: SRCopyableLabel!
+    @IBOutlet weak var notesLbl: UILabel!
+    @IBOutlet weak var notesView: UIView!
+    
     @IBOutlet weak var descriptionLbl: UILabel!
     @IBOutlet weak var languageLbl: UILabel!
     @IBOutlet weak var patientInitialLbl: UILabel!
     @IBOutlet weak var patientLbl: UILabel!
-    @IBOutlet weak var specialityLbl: UILabel!
     @IBOutlet weak var contactLbl: UILabel!
     var serviceType = ""
     @IBOutlet weak var departmentLbl: UILabel!
@@ -43,26 +76,35 @@ class TelephoneConferenceDetailsVC: UIViewController {
     @IBOutlet weak var importtentLblView: UIView!
     @IBOutlet weak var serviceVerificationview: UIView!
     @IBOutlet weak var AppointmentInfoLbl: UILabel!
-    
-    
     @IBOutlet weak var titleLblView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        self.specialRequestsView.visibility = .gone
-        self.casePatientInitialView.visibility = .gone
-        self.casePatientView.visibility = .gone
-        
-        
+
+        self.setupLabelTap()
         let userId = userDefaults.string(forKey: UserDeafultsString.instance.UserID) ?? ""
-        
         self.getOnsiteData(customerId: userId)
      
     }
+    
+    @objc func labelTapped(_ sender: UITapGestureRecognizer) {
+            print("labelTapped")
+        if let url = URL(string: self.urlToOpen) {
+            UIApplication.shared.open(url)
+        }
+        }
+    
+    func setupLabelTap() {
+            
+            let labelTap = UITapGestureRecognizer(target: self, action: #selector(self.labelTapped(_:)))
+            self.linkLbl.isUserInteractionEnabled = true
+            self.linkLbl.addGestureRecognizer(labelTap)
+            
+        }
+
     @IBAction func backBtnTapped(){
         self.navigationController?.popViewController(animated: true)
     }
+    
     @IBAction func actionAvilableRequest(_ sender: UIButton) {
         let userId = userDefaults.string(forKey: UserDeafultsString.instance.UserID) ?? ""
         acceptRequestApi(notificationID: "0", appointmentID: "\(appointmentID)", userID: userId)
@@ -78,6 +120,7 @@ class TelephoneConferenceDetailsVC: UIViewController {
             print("file name is ", fileName ?? "")
             let vc = self.storyboard?.instantiateViewController(identifier: "ServiceVerificationURLViewController") as! ServiceVerificationURLViewController
             vc.serviceURL = fileName ?? ""
+            vc.isFromRegular=true
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -86,7 +129,7 @@ class TelephoneConferenceDetailsVC: UIViewController {
 extension TelephoneConferenceDetailsVC{
     func getOnsiteData(customerId:String){
         SwiftLoader.show(animated: true)
-        let urlString =   "https://lsp.totallanguage.com/Home/GetData?methodType=AppointmentInterpreterData&NotoficationId=0&AppointmentID=\(appointmentID)&Interpreterid=\(customerId)&UserType=Vendor&Userid=\(customerId)"
+        let urlString =   "https://lsp.totallanguage.com/Home/GetData?methodType=AppointmentInterpreterData&NotoficationId=0&AppointmentID=\(appointmentID)&Interpreterid=\(customerId)&UserType=6&Userid=\(customerId)"
        
         //\(date)"
         print("url to get schedule \(urlString)")
@@ -105,31 +148,180 @@ extension TelephoneConferenceDetailsVC{
                         print("Success")
                         print("ApiGetVRIScheduleDataResponseMdel DATA IS \(self.apiOnsiteDetailsResponseModel)")
                         let apiData = self.apiOnsiteDetailsResponseModel?.appointmentInterpreterData?.first
-                        print("apiGetVRIScheduleDataResponseMdel \(self.apiOnsiteDetailsResponseModel)")
                         
-                        self.languageLbl.text = self.apiOnsiteDetailsResponseModel?.appointmentInterpreterData?.first?.languageName ?? "N/A"
-                       
+                        
+                    
+                        let underlineAttribute = [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.thick.rawValue]
+                        
+                        
+                        if apiData?.text?.replacingOccurrences(of: "\\", with: "").isValidURL ?? false{
+                            let attributes: [NSAttributedString.Key: Any] = [
+                                .underlineStyle:NSUnderlineStyle.thick.rawValue ,
+                                .foregroundColor: UIColor(hexString: "#199DD9"),
+                            ]
+                            
+                            let underlineAttributedString = NSAttributedString(string: apiData?.text?.replacingOccurrences(of: "\\", with: "") ?? "", attributes: attributes)
+                            linkLbl.attributedText = underlineAttributedString
+                            let labelTap = UITapGestureRecognizer(target: self, action: #selector(self.labelTapped(_:)))
+                            self.urlToOpen = apiData?.text?.replacingOccurrences(of: "\\", with: "") ?? ""
+                            self.linkLbl.isUserInteractionEnabled = true
+                            self.linkLbl.addGestureRecognizer(labelTap)
+                            
+                            
+                            
+                            
+                        }else {
+                            linkLbl.text = apiData?.text
+                            linkLbl.removeEmptyString()
+
+                        }
+        
+                        
+                        let companyName = (UserDefaults.standard.value(forKey: UserDeafultsString.instance.CompanyName) as? String) ?? ""
+                        
+                        let attributesBold = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-Bold", size: 14)!,NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+                        
+                        let attributesBasic = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue", size: 14)!,NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+                        
+                        let attriStringNote = NSAttributedString(string:"Note:", attributes:attributesBold)
+                        let attriStringImportant = NSAttributedString(string:"***Important:", attributes:attributesBold)
+                        
+                        
+                        let attriBasicNote = NSAttributedString(string:" Before you click that you are available, it is expected that you will have checked your personal schedule and will be committed to provide the service. Giving back an appointment once you have been Booked costs time and money and can lead to Botched appointments for the client and a possible termination for the interpreter. Please be sure you have no other scheduling conflicts.", attributes:attributesBasic)
+                        
+                        let attriBasicImportant = NSAttributedString(string:" Please note that an interpreter cannot cancel/return an appointment without speaking to someone at \(companyName) directly. Not via email nor voicemail. All returns are to be discussed with \(companyName) Scheduling staff.", attributes:attributesBasic)
+                        
+                        
+                        let finalNoteString = NSMutableAttributedString()
+                        finalNoteString.append(attriStringNote)
+                        finalNoteString.append(attriBasicNote)
+                        
+                        
+                        let finalImportantString = NSMutableAttributedString()
+                        finalImportantString.append(attriStringImportant)
+                        finalImportantString.append(attriBasicImportant)
+                        
+                        
+                        
+   
+                        
+                        
+                        print("apiGetVRIScheduleDataResponseMdel \(self.apiOnsiteDetailsResponseModel)")
+
+                        
+                        if self.serviceType == "Telephone Conference"{
+                            self.notesView.visibility = .gone
+                            self.conCallsView.visibility = .visible
+                        }
+                        else {
+                            self.notesView.visibility = .visible
+                            self.conCallsView.visibility = .gone
+                        }
+                        
+                        
+                        
+                        
                         self.interpreterNameLbl.text = apiData?.interpretorName ?? "N/A"
                         //self.customerNameLbl.text = apiData?.customerName ?? "N/A"
                         self.authenticationCodelbl.text = apiData?.authCode ?? "N/A"
                         self.serviceTypeLbl.text = apiData?.appointmentType ?? "N/A"
-//                        self.venueNameLbl.text = apiData?.venueName ?? "N/A"
-//                        self.venueAddressLbl.text = apiData?.vendorAddress ?? "N/A"
-//                        self.departmentLbl.text = apiData?.departmentName ?? "N/A"
-                        self.contactLbl.text = apiData?.contactName ?? "N/A"
-                        self.specialityLbl.text = apiData?.specialityName ?? "N/A"
-                        self.patientLbl.text = apiData?.caseNumber ?? "N/A"
-                        self.patientInitialLbl.text = apiData?.cPIntials ?? "N/A"
-                        self.descriptionLbl.text = apiData?.aptDetails ?? "N/A"
                         self.dateLbl.text = self.convertTimeFormaterOnlyDate(apiOnsiteDetailsResponseModel?.appointmentInterpreterData?.first?.startDateTime ?? "")
                         
-                        self.timeLbl.text = self.convertTimeFormater(apiOnsiteDetailsResponseModel?.appointmentInterpreterData?.first?.startDateTime ?? "")
+                        self.timeLbl.text = "\(self.convertTimeFormater(apiOnsiteDetailsResponseModel?.appointmentInterpreterData?.first?.startDateTime ?? ""))-\(self.convertTimeFormater(apiOnsiteDetailsResponseModel?.appointmentInterpreterData?.first?.endDateTime ?? ""))"
+                        self.contactLbl.text = apiData?.contactName ?? "N/A"
+                        self.patientLbl.text = apiData?.caseNumber ?? "N/A"
+                        self.patientInitialLbl.text = apiData?.cPIntials ?? "N/A"
+                        self.languageLbl.text = self.apiOnsiteDetailsResponseModel?.appointmentInterpreterData?.first?.languageName ?? "N/A"
+                        self.conCallsLabel.text = apiData?.location ?? ""
+                        self.conCallsLabel.removeEmptyString()
                         
-                        self.specialRequestsLbl.text = apiOnsiteDetailsResponseModel?.appointmentInterpreterData?.first?.text ?? "N/A"
+                        if apiData?.text == "" || apiData?.text == nil{
+                            self.linkLbl.removeEmptyString()
+                        }
+                        
+//                        self.linkLbl.text = apiData?.text
+//                        self.linkLbl.removeEmptyString()
+                        self.descriptionLbl.text = apiData?.aptDetails ?? "N/A"
+                        self.descriptionLbl.removeEmptyString()
                         self.statusLbl.text = self.apiOnsiteDetailsResponseModel?.appointmentInterpreterData?.first?.appointmentStatusType ?? "N/A"
+                        let userId = userDefaults.string(forKey: UserDeafultsString.instance.UserID) ?? ""
+                        if (apiData?.appointmentStatusID == "1" || apiData?.appointmentStatusID == "7" || apiData?.appointmentStatusID == "8") && (apiData?.interpreterID == Int(userId)){
+                            //                            BOOKED APPOINTMENT AND WHOLE DATA AND SERVICE VERIFICATION FORM NEEDS TO BE SHOWN
+                            
+                            self.statusLbl.text = "Booked"
+                            
+                            self.serviceVerificationview.visibility = .visible
+                            
+                            self.interpreterNameView.visibility = .visible
+                            self.authenticationCodeView.visibility = .visible
+                            self.serviceTypeView.visibility = .visible
+                            self.dateView.visibility = .visible
+                            self.timeView.visibility = .visible
+                            self.contactView.visibility = .visible
+                            self.casePatientView.visibility = .visible
+                            self.casePatientInitialView.visibility = .visible
+                            self.languageView   .visibility = .visible
+//                            self.conCallsView.visibility = .visible
+                            self.linkView.visibility = .visible
+                            self.statusView.visibility = .visible
+                            self.bottomBtnView.isHidden = true
+                            self.AppointmentInfoLbl.visibility = .gone
+                        }else {
+                            
+                            self.serviceVerificationview.visibility = .gone
+                            self.interpreterNameView.visibility = .visible
+                            self.authenticationCodeView.visibility = .visible
+                            self.serviceTypeView.visibility = .visible
+                            self.dateView.visibility = .visible
+                            self.timeView.visibility = .visible
+                            self.contactView.visibility = .gone
+                            self.casePatientView.visibility = .gone
+                            self.casePatientInitialView.visibility = .gone
+                            self.languageView.visibility = .visible
+//                            self.conCallsView.visibility = .visible
+                            self.linkView.visibility = .gone
+                            self.descriptionView.visibility = .visible
+                            self.statusView.visibility = .visible
+                            if (apiData?.appointmentStatusID == "2" || apiData?.appointmentStatusID == "11") && (apiData?.acceptAndDeclineStatus == nil){
+                                
+                                self.AppointmentInfoLbl.visibility = .visible
+                                                       self.titleLbl.text = "Availability Inquiry"
+        let coName = apiData?.companyName ?? ""
+                                self.AppointmentInfoLbl.text = "\(coName)has sent you INQUIRY. Please check your availability and select the option below to indicate if you are available or have to decline the work."
+                                
+                            }else {
+                                self.titleLbl.text = "\(apiData?.appointmentStatusType ?? "") Appointment"
+                                self.AppointmentInfoLbl.visibility = .gone
+                                
+                            }
+
+                            
+                            if (apiData?.appointmentStatusID == "2") && (apiData?.acceptAndDeclineStatus == nil) && (apiData?.isAssigned == nil) && (apiData?.interpreterID == 0){
+                                self.statusLbl.text = "Not Booked"
+                                self.bottomBtnView.isHidden = false
+                            }else if (apiData?.appointmentStatusID == "11") && (apiData?.acceptAndDeclineStatus == true) && (apiData?.isAssigned == nil) && (apiData?.interpreterID == 0 || apiData?.interpreterID ==  Int(userId)){
+                                self.statusLbl.text = "\(apiData?.appointmentStatusType ?? "")(Waiting for Admin Approval)"
+                                self.bottomBtnView.isHidden = true
+                            }else if  (apiData?.acceptAndDeclineStatus == false) {
+                                self.statusLbl.text = "Unavailable Appointment"
+                                self.bottomBtnView.isHidden = true
+                            }else {
+                                self.bottomBtnView.isHidden = true
+                            }
+                        }
                         
-                        changeTitleLabel(appointmentType: apiData?.appointmentStatusType ?? "", AcceptAndDeclineStatus: apiData?.acceptAndDeclineStatus ?? false ,isAssigned : apiData?.isAssigned ?? false , IsExpired: apiData?.isExpired ?? false , companyName: apiData?.companyName ?? "")
                         
+                        if apiData?.appointmentStatusID == "2" || apiData?.appointmentStatusID == "11"{
+                            self.importtentLblView.visibility = .visible
+                            self.importantNoteLbl.attributedText = finalNoteString
+                            
+                        }else if apiData?.appointmentStatusID == "1" || apiData?.appointmentStatusID == "7" || apiData?.appointmentStatusID == "8"{
+                            self.importtentLblView.visibility = .visible
+                            self.importantNoteLbl.attributedText = finalImportantString
+                        }else
+                        {
+                            self.importtentLblView.visibility = .gone
+                        }
                         
                     }
                     catch
@@ -143,133 +335,8 @@ extension TelephoneConferenceDetailsVC{
             })
     }
     
-    func changeTitleLabel(appointmentType : String , AcceptAndDeclineStatus : Bool , isAssigned : Bool , IsExpired: Bool,companyName : String ){
-        var  appointmentColor = ""
-        print("Total public count ", GetPublicData.sharedInstance.apiGetSpecialityDataModel?.appointmentStatus?.count ?? 0 )
-        GetPublicData.sharedInstance.apiGetSpecialityDataModel?.appointmentStatus?.forEach({ (AppointmentStatusData) in
-            
-            if AppointmentStatusData.value == appointmentType {
-                appointmentColor = AppointmentStatusData.color ?? ""
-                self.statusLbl.textColor = UIColor(hexString: appointmentColor)
-            }
-        })
-        print("appointment Type and color ", appointmentType , appointmentColor)
-        if appointmentType == "Booked" {
-            self.serviceVerificationview.visibility = .visible
-            self.AppointmentInfoLbl.visibility = .gone
-            self.bottomBtnView.isHidden = true
-            if !(AcceptAndDeclineStatus) && !(isAssigned) {
-                self.titleLbl.text = "Un-Avialable Appointment"
-                self.titleLblView.backgroundColor = UIColor.white
-                self.importantNoteLbl.text = ""
-                
-            }else if AcceptAndDeclineStatus && !(isAssigned) {
-                self.titleLbl.text = "Un-Avialable Appointment"
-                self.titleLblView.backgroundColor = UIColor.white
-                self.importantNoteLbl.text = ""
-            }else if AcceptAndDeclineStatus && isAssigned {
-                self.titleLbl.text = "Booked Appointment"
-                self.importantNoteLbl.text = "*** Important:  Please note that an interpreter cannot cancel/return an appointment without speaking to someone at \(companyName) directly.  Not via email nor voicemail.  All returns are to be discussed with \(companyName) Scheduling staff. ***"
-                self.titleLblView.backgroundColor = UIColor(hexString: appointmentColor)
-            }else if IsExpired && !(isAssigned) {
-                self.titleLbl.text = "Un-Avialable Appointment"
-                self.titleLblView.backgroundColor = UIColor.white
-                self.importantNoteLbl.text = ""
-            }else if !(IsExpired) && isAssigned {
-                self.titleLbl.text = "Booked Appointment"
-                self.importantNoteLbl.text = "*** Important:  Please note that an interpreter cannot cancel/return an appointment without speaking to someone at \(companyName) directly.  Not via email nor voicemail.  All returns are to be discussed with \(companyName) Scheduling staff. ***"
-                self.titleLblView.backgroundColor = UIColor(hexString: appointmentColor)
-            }else {
-                self.importantNoteLbl.text = ""
-                self.titleLbl.text = "Booked Appointment"
-                self.titleLblView.backgroundColor = UIColor(hexString: appointmentColor)
-            }
-        }else if appointmentType == "Not Booked" {
-            self.bottomBtnView.isHidden = false
-            self.serviceVerificationview.visibility = .gone
-            self.AppointmentInfoLbl.visibility = .visible
-            self.AppointmentInfoLbl.text = "\(companyName)has sent you INQUIRY. Please check your availability and select the option below to indicate if you are available or have to decline the work."
-            self.importantNoteLbl.text = "Note: Before you click that you are available, it is expected that  you will have checked your personal schedule and will be committed to provide the service.  Giving back an appointment once you have been Booked costs time and money and can lead to Botched appointments for the client and a possible termination for the interpreter. Please be sure you have no other scheduling conflicts."
-            if AcceptAndDeclineStatus {
-                self.titleLbl.text = "Availability Inquiry"
-                self.titleLblView.backgroundColor = UIColor.white
-                
-            }else {
-                self.titleLbl.text = "Availability Inquiry"
-                self.titleLblView.backgroundColor = UIColor.white
-            }
-        }else if appointmentType == "InProcess" {
-            self.serviceVerificationview.visibility = .gone
-            self.AppointmentInfoLbl.visibility = .gone
-            self.bottomBtnView.isHidden = false
-            self.importantNoteLbl.text = "Note: Before you click that you are available, it is expected that  you will have checked your personal schedule and will be committed to provide the service.  Giving back an appointment once you have been Booked costs time and money and can lead to Botched appointments for the client and a possible termination for the interpreter. Please be sure you have no other scheduling conflicts."
-            if AcceptAndDeclineStatus && isAssigned {
-                self.titleLbl.text = "Notice of change"
-                self.titleLblView.backgroundColor = UIColor(hexString: "#3FAEFF")
-            }else if AcceptAndDeclineStatus && !(isAssigned) {
-                self.titleLbl.text = "Availability Inquiry"
-                self.titleLblView.backgroundColor = UIColor.white
-            }else if !(AcceptAndDeclineStatus) {
-                self.titleLbl.text = "Availability Inquiry"
-                self.titleLblView.backgroundColor = UIColor.white
-            }else {
-                self.titleLbl.text = "Availability Inquiry"
-                self.titleLblView.backgroundColor = UIColor.white
-            }
-        }else if appointmentType == "Invoice Processing" {
-            self.serviceVerificationview.visibility = .visible
-            self.AppointmentInfoLbl.visibility = .gone
-            self.bottomBtnView.isHidden = true
-            self.importantNoteLbl.text = "*** Important:  Please note that an interpreter cannot cancel/return an appointment without speaking to someone at \(companyName) directly.  Not via email nor voicemail.  All returns are to be discussed with \(companyName) Scheduling staff. ***"
-            if AcceptAndDeclineStatus {
-                self.AppointmentInfoLbl.text = "Appointment Information"
-                self.titleLbl.text = "Un-Avialable Appointment"
-                self.titleLblView.backgroundColor = UIColor(hexString: "#3FAEFF")
-            }else {
-                self.titleLbl.text = "Booked Appointment"
-                self.titleLblView.backgroundColor = UIColor(hexString: "#3FAEFF")
-            }
-        }else if appointmentType == "Late Cancelled" {
-            self.bottomBtnView.isHidden = true
-            self.serviceVerificationview.visibility = .gone
-            self.AppointmentInfoLbl.visibility = .gone
-            if AcceptAndDeclineStatus && !(isAssigned) {
-                self.titleLbl.text = "Late Cancelled"
-                self.titleLblView.backgroundColor = UIColor.white
-            }else {
-                self.titleLbl.text = "LateCancelled Appointment"
-                self.titleLblView.backgroundColor = UIColor.white
-            }
-        }else if appointmentType == "Invoiced" {
-            self.bottomBtnView.isHidden = true
-            self.serviceVerificationview.visibility = .gone
-            self.AppointmentInfoLbl.visibility = .gone
-            self.titleLblView.backgroundColor = UIColor.white
-            self.titleLbl.text = "LateCancelled Appointment"
-            self.importantNoteLbl.text = "*** Important:  Please note that an interpreter cannot cancel/return an appointment without speaking to someone at \(companyName) directly.  Not via email nor voicemail.  All returns are to be discussed with \(companyName) Scheduling staff. ***"
-        }else if appointmentType == "Botched" {
-            self.serviceVerificationview.visibility = .gone
-            self.AppointmentInfoLbl.visibility = .gone
-            self.bottomBtnView.isHidden = true
-            self.titleLblView.backgroundColor = UIColor.white
-            self.titleLbl.text = "Botched Appointment"
-            self.importantNoteLbl.text = ""
-        }else if appointmentType == "Cancelled" {
-            self.titleLbl.text = "Cancelled Appointment"
-            self.titleLblView.backgroundColor = UIColor.white
-            self.bottomBtnView.isHidden = true
-            self.serviceVerificationview.visibility = .gone
-            self.AppointmentInfoLbl.visibility = .gone
-            self.importantNoteLbl.text = ""
-        }else{
-            self.titleLbl.text = "Appointment Details"
-            self.titleLblView.backgroundColor = UIColor.white
-            self.bottomBtnView.isHidden = true
-            self.serviceVerificationview.visibility = .gone
-            self.AppointmentInfoLbl.visibility = .gone
-            self.importantNoteLbl.text = ""
-        }
-    }
+
+    
     func previewFiles(fileName : String ,serviceType:String , completionHandler : @escaping(Bool? , String?) -> ()){
         SwiftLoader.show(animated: true)
         let urlString =   "https://lsp.totallanguage.com/PreviewFiles/Previewawsfiles?filename=\(fileName)&type=\(serviceType)"
@@ -415,10 +482,19 @@ extension TelephoneConferenceDetailsVC{
             return ""
         }
     }
-    
-    
-    
-    
-    
-    
+
+}
+
+
+
+extension String {
+    var isValidURL: Bool {
+        let detector = try! NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
+        if let match = detector.firstMatch(in: self, options: [], range: NSRange(location: 0, length: self.utf16.count)) {
+            // it is a link, if the match covers the whole string
+            return match.range.length == self.utf16.count
+        } else {
+            return false
+        }
+    }
 }

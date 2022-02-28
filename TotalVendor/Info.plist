@@ -26,13 +26,15 @@
 	<string>Light</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>This app requires access to camera for initiating VRI calls </string>
+	<string>This app requires access for client location to make sure vendors are in there specified location from their profile to attend video remote interpretation(VRI) and over the phone interpretation (OPI).</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>$(PRODUCT_NAME) Authentication with TouchId or FaceID</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -41,6 +43,10 @@
 	<string>This app requires access for client location to make sure vendors are in there specified location from their profile to attend video remote interpretation(VRI) and over the phone interpretation (OPI).</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app requires access for client location to make sure vendors are in there specified location from their profile to attend video remote interpretation(VRI) and over the phone interpretation (OPI).</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>To Upload Vendor Time Finished documents</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To Upload Vendor Time Finished documents</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -53,6 +59,8 @@
 		<string>remote-notification</string>
 		<string>voip</string>
 	</array>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

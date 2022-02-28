@@ -16,7 +16,7 @@ enum Direction {
 }
 
 // add image to textfield
-func withImage(direction: Direction, image: UIImage, colorSeparator: UIColor, colorBorder: UIColor){
+    func withImage(direction: Direction, image: UIImage, colorSeparator: UIColor, colorBorder: UIColor,selectedTintColor:UIColor){
     let mainView = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 45))
     mainView.layer.cornerRadius = 5
 
@@ -30,6 +30,7 @@ func withImage(direction: Direction, image: UIImage, colorSeparator: UIColor, co
 
     let imageView = UIImageView(image: image)
     imageView.contentMode = .scaleAspectFit
+    imageView.tintColor = selectedTintColor
     imageView.frame = CGRect(x: 12.0, y: 10.0, width: 24.0, height: 24.0)
     view.addSubview(imageView)
 
@@ -47,8 +48,8 @@ func withImage(direction: Direction, image: UIImage, colorSeparator: UIColor, co
         self.rightView = mainView
     }
 
-    self.layer.borderColor = colorBorder.cgColor
-    self.layer.borderWidth = CGFloat(0.5)
-    self.layer.cornerRadius = 5
+//    self.layer.borderColor = colorBorder.cgColor
+//    self.layer.borderWidth = CGFloat(0.5)
+//    self.layer.cornerRadius = 5
 }
 }

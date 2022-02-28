@@ -14,15 +14,10 @@ class NewSideMenuViewController: UIViewController {
     var controlsOpen = false
     var vendorDetailsOpen = false
     var apiLogoutApi : ApiUpdateTokenResponseModel?
-    
     @IBOutlet weak var vendorImage: UIImageView!
-    
     @IBOutlet weak var vendorImageOutet: UIImageView!
-    
     @IBOutlet weak var vendorNameLbl1: UILabel!
-    
     @IBOutlet weak var vendorNameLbl2: UILabel!
-    
     @IBOutlet weak var dashboardView:UIView!
     @IBOutlet weak var callsView:UIView!
     @IBOutlet weak var VRICallsView:UIView!
@@ -40,20 +35,24 @@ class NewSideMenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //        CALLS VIEW
+        
+        
+       
         VRICallsView.visibility = .gone
         VRIAndOPILOgsView.visibility = .gone
         callHistoryView.visibility = .gone
-        
         //        CONTROLS VIEW
         vendorDetailsView.visibility = .gone
         vendorTimeOffView.visibility = .gone
         vendorTimeFinishedView.visibility = .gone
         earningsView.visibility = .gone
-        
+        callsView.visibility = .gone
+        earningsView.visibility = .gone
+        vendorDetailsView.visibility = .gone
+        supportView.visibility = .gone
         //        VENDORNAME VIEW
         supportView.visibility = .gone
         logoutView.visibility = .gone
-        
         vendorNameLbl1.text = (userDefaults.value(forKey: UserDeafultsString.instance.fullName) as? String) ?? ""
         vendorNameLbl2.text = (userDefaults.value(forKey: UserDeafultsString.instance.fullName) as? String) ?? ""
         print("IMAGE DATA IS \(userDefaults.value(forKey: UserDeafultsString.instance.USER_IMAGEDATA) ?? "")")
@@ -65,15 +64,12 @@ class NewSideMenuViewController: UIViewController {
         }else {
             self.vendorImage.image = UIImage(systemName: "person.fill")
             self.vendorImage.tintColor  = .white
-  
         }
-        
-        
-        
     }
     
     @IBAction func dashboardTapped (_ sender: Any){
-        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "CalendarViewController") as! CalendarViewController
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     @IBAction func callsTapped (_ sender: Any){
         
@@ -90,8 +86,7 @@ class NewSideMenuViewController: UIViewController {
             earningsView.visibility = .gone
             supportView.visibility = .gone
             logoutView.visibility = .gone
-            
-            
+    
             
         }else {
             VRICallsView.visibility = .gone
@@ -101,30 +96,25 @@ class NewSideMenuViewController: UIViewController {
         
     }
     @IBAction func vriTapped (_ sender: Any){
-        
-//        VRINewViewController
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "VRINewViewController") as! VRINewViewController
-        self.navigationController?.pushViewController(vc, animated: true)
-        
-        
+        self.openDialogBox()
     }
     @IBAction func vriOpiLogsTapped (_ sender: Any){
-//        VRIAndOPILogsVC
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "VRIAndOPILogsVC") as! VRIAndOPILogsVC
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.openDialogBox()
+
     }
     @IBAction func callHistoryTapped (_ sender: Any){
-    }
+    
+        self.openDialogBox()}
     
     @IBAction func controlsTapped (_ sender: Any){
         
         controlsOpen = !controlsOpen
         
         if controlsOpen{
-            vendorDetailsView.visibility = .visible
+//            vendorDetailsView.visibility = .visible
             vendorTimeOffView.visibility = .visible
             vendorTimeFinishedView.visibility = .visible
-            earningsView.visibility = .visible
+//            earningsView.visibility = .visible
             VRICallsView.visibility = .gone
             VRIAndOPILOgsView.visibility = .gone
             callHistoryView.visibility = .gone
@@ -143,15 +133,11 @@ class NewSideMenuViewController: UIViewController {
         
     }
     @IBAction func vendorDetailsTapped (_ sender: Any){
-        
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "VendorDetailViewController") as! VendorDetailViewController
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        self.openDialogBox()
     }
     @IBAction func vendorTimeOffTapped (_ sender: Any){
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "VendorTimeOffViewController") as! VendorTimeOffViewController
         self.navigationController?.pushViewController(vc, animated: true)
-            
     }
     
     
@@ -161,13 +147,13 @@ class NewSideMenuViewController: UIViewController {
         
     }
     @IBAction func earningsTapped (_ sender: Any){
-        
+        self.openDialogBox()
     }
     @IBAction func vendorNameTapped (_ sender: Any){
         vendorDetailsOpen = !vendorDetailsOpen
         
         if vendorDetailsOpen{
-            supportView.visibility = .visible
+//            supportView.visibility = .visible
             logoutView.visibility = .visible
             VRICallsView.visibility = .gone
             VRIAndOPILOgsView.visibility = .gone
@@ -182,12 +168,12 @@ class NewSideMenuViewController: UIViewController {
         }
     }
     @IBAction func supportTapped (_ sender: Any){
-        
+        self.openDialogBox()
     }
-    
     
     func hitLogoutApi(){
 //  UserDefaults.standard.setValue(token, forKey: "FCMToken")
+        SwiftLoader.show(animated: true)
         let deviceToken = UserDefaults.standard.value(forKey: "FCMToken")
         let updateVoipToken = UserDefaults.standard.value(forKey: "voipToken") ?? ""
         let url =  APIs.logoutApi
@@ -217,10 +203,11 @@ class NewSideMenuViewController: UIViewController {
                    
 //                        print("ApiGrumerProfileResponseModel----------Status----", self.apiUpdateDeviceTokenResponseModel?.table?.first?.success)
 //                        guard let status = self.apiUpdateDeviceTokenResponseModel?.table?.first?.success else{ return }
+                           SwiftLoader.hide()
                            if status == 1{
                                print("----- HITBOOKINGSLOTSSSS SUCCESSFUL----- ")
                             
-                               DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change
+                               DispatchQueue.main.asyncAfter(deadline: .now()) { // Change
                                    SwiftLoader.hide()
                                    let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
                                                             let storyboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -235,6 +222,7 @@ class NewSideMenuViewController: UIViewController {
                            
                        } catch let error {
 //                               SwiftLoader.hide()
+                           SwiftLoader.hide()
                            print(error)
                            
 //         self.showAlertWithMsgNCancelBtn(withTitle: "success--error", withMessage:"Please try again Later")
@@ -248,39 +236,25 @@ class NewSideMenuViewController: UIViewController {
        }
     
     @IBAction func logoutTapped (_ sender: Any){
-        hitLogoutApi()
-    }
-    
-    
-    
-    /*
-    @IBAction func logoutTapped (_ sender: Any){
-        SwiftLoader.show(animated: true)
-        UserDefaults.standard.setValue(false, forKey: "isLoggedIn")
-        print("LogOut")
-//                let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController
-//                vc!.modalPresentationStyle = .fullScreen
-//                present(vc!, animated: true, completion: nil)
-//                self.navigationController?.pushViewController(vc!, animated: true)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change
-            SwiftLoader.hide()
-            let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
-                                     let storyboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                                     let navigationController:UINavigationController = storyboard.instantiateInitialViewController() as! UINavigationController
-                                     let rootViewController:UIViewController = storyboard.instantiateViewController(withIdentifier:"InitialViewController") as! InitialViewController
-                                     navigationController.viewControllers = [rootViewController]
-                                     appDelegate.window!.rootViewController = navigationController
-                                     appDelegate.window!.makeKeyAndVisible()
-           // Code you want to be delayed
-        }
-      
-        
+        let deleteAlert = UIAlertController(title: "Total Language", message: "Are you sure you want to logout?", preferredStyle: UIAlertController.Style.alert)
+                
+        deleteAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
+                    print("Handle Ok logic here")
+            
+            
+            self.hitLogoutApi()
+            
+           }))
+                
+        deleteAlert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (action: UIAlertAction!) in
+                    print("Handle Cancel Logic here")
+            deleteAlert .dismiss(animated: true, completion: nil)
+           }))
+        self.present(deleteAlert, animated: true, completion: nil)
+   
         
     }
-    
-    */
-    
     
 }
 

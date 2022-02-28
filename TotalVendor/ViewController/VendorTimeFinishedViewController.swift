@@ -27,7 +27,7 @@ class VendorTimeFinishedViewController: UIViewController  {
     
     
     
-    
+var apiNotificationCountNewResponseModel:ApiNotificationCountNewResponseModel?
     @IBOutlet weak var companyLogoImage: UIImageView!
     
     @IBOutlet weak var topViewOutlet: UIView!
@@ -43,9 +43,19 @@ class VendorTimeFinishedViewController: UIViewController  {
     @IBOutlet weak var vendorTimeOffTV: UITableView!
     var miDate = Calendar.current.date(byAdding: .year, value: -50, to: Date())
     var apiScheduleAppointmentResponseModel : ApiCalendarDataResponseModel?
+    @IBOutlet weak var notificationBtnOutlet: MIBadgeButton!
     var apiVendorTimeFinishResponseModel:ApiVendorTimeFinishResponseModel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        notificationBtnOutlet.badgeString = "0"
+        notificationBtnOutlet.badgeBackgroundColor = #colorLiteral(red: 0, green: 0.5686412892, blue: 0, alpha: 1)
+        notificationBtnOutlet.badgeTextColor = UIColor.white
+        notificationBtnOutlet.badgeEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 2)
+        
+        
+        
         let imageData = (userDefaults.value(forKey: UserDeafultsString.instance.CompanyLogo) ?? "")
         let finalData = "\(Live_BASE_URL)\(imageData)"
         print("FINAL DATA IS \(finalData)")
@@ -54,11 +64,7 @@ class VendorTimeFinishedViewController: UIViewController  {
         }else {
             self.companyLogoImage.image = UIImage(named: "logo")
         }
- 
-       
-        
         companyNameLbl.text = UserDefaults.standard.value(forKey: UserDeafultsString.instance.CompanyName) as? String ?? ""
-//        topViewOutlet.addBottomShadow()
         vendorTimeOffTV.delegate = self
         vendorTimeOffTV.dataSource = self
         let abc = Date()
@@ -72,8 +78,20 @@ class VendorTimeFinishedViewController: UIViewController  {
         
     }
     
+    
+    
+    @IBAction func sideMenuBtnTapped(_ sender: Any) {
+   
+    }
+    
+    @IBAction func notificationBtnTapped(_ sender: Any) {
+        
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.getNotificatioDetail()
+        mainAddReimbursementArray.removeAll()
         self.tabBarController?.tabBar.isHidden = true
     }
     
@@ -115,7 +133,7 @@ class VendorTimeFinishedViewController: UIViewController  {
         let userId = UserDefaults.standard.value(forKey: UserDeafultsString.instance.UserID) ?? "0"
         let companyID = UserDefaults.standard.value(forKey: UserDeafultsString.instance.CompanyID) ?? "0"
         //01/07/2021  MM/dd/yyyy
-        let urlString = "https://lsp.totallanguage.com/VendorManagement/VendorTimeFinished/GetCommonData?methodType=GETNEWTIMEFINISHEDLIST&CompanyID=\(companyID)&VendorId=\(userId)&UserType=Vendor&UserID=\(userId)&TimeFinished=BOOKEDANDTIME&FilterCount=1000&StartDateTime=\(startDate)&EndDateTime=\(endDate)&RowNumber=0&Filter_RowNumber=1000"
+        let urlString = "https://lsp.totallanguage.com/VendorManagement/VendorTimeFinished/GetCommonData?methodType=GETNEWTIMEFINISHEDLIST&CompanyID=\(companyID)&VendorId=\(userId)&UserType=6&UserID=\(userId)&TimeFinished=BOOKEDANDTIME&FilterCount=1000&StartDateTime=\(startDate)&EndDateTime=\(endDate)&RowNumber=0&Filter_RowNumber=1000"
         print("url to get apiGetVendorDetail  \(urlString)")
                 AF.request(urlString, method: .get , parameters: nil, encoding: JSONEncoding.default, headers: nil)
                     .validate()
@@ -145,6 +163,45 @@ class VendorTimeFinishedViewController: UIViewController  {
                         }
                 })
      }
+    
+    
+    func getNotificatioDetail(){
+        SwiftLoader.show(animated: true)
+        self.apiNotificationCountNewResponseModel = nil
+        let userId = UserDefaults.standard.value(forKey: UserDeafultsString.instance.UserID) ?? "0"
+        let companyID = UserDefaults.standard.value(forKey: UserDeafultsString.instance.CompanyID) ?? "0"
+ 
+        let urlString = "https://lsp.totallanguage.com/Home/GetData?methodType=NotificationsCounts%2CNOTIFICATIONSCOUNTSSTAFF%2CGETSYSTEMADMINNOTIFICATION&UserID=\(userId)&CompanyId=\(companyID)"
+        print("url to get notificationDetail  \(urlString)")
+        AF.request(urlString, method: .get , parameters: nil, encoding: JSONEncoding.default, headers: nil)
+            .validate()
+            .responseData(completionHandler: { [self] (response) in
+                //                        SwiftLoader.hide()
+                switch(response.result){
+                case .success(_):
+                    print("Respose Success Notification Data ")
+                    guard let daata = response.data else { return }
+                    do {
+                        let jsonDecoder = JSONDecoder()
+                        self.apiNotificationCountNewResponseModel = try jsonDecoder.decode(ApiNotificationCountNewResponseModel.self, from: daata)
+                        print("Success notification Model \(self.apiNotificationCountNewResponseModel)")
+                        
+                        let count = self.apiNotificationCountNewResponseModel?.nOTIFICATIONSCOUNTSSTAFF?.first?.notificationCounts ?? 0
+                        
+                        self.notificationBtnOutlet.badgeString = String(count)
+                        SwiftLoader.hide()
+                    } catch{
+                        
+                        print("error block notification Data  " ,error)
+                    }
+                    
+                case .failure(_):
+                    print("Respose Failure ")
+                    
+                }
+            })
+    }
+    
     
     func convertTimeFormater(_ date: String) -> String
     {
@@ -204,7 +261,8 @@ extension VendorTimeFinishedViewController : UITableViewDelegate, UITableViewDat
         cell.processBtn.addTarget(self, action: #selector(openProcessScreen(sender:)), for: .touchUpInside)
         cell.uploadDocumentCell.tag = indexPath.row
         cell.uploadDocumentCell.addTarget(self, action: #selector(uploadDocumentsTapped(sender:)), for: .touchUpInside)
-        
+        cell.moreInfoBtn.tag = indexPath.row
+        cell.moreInfoBtn.addTarget(self, action: #selector(moreInfoTapped(sender:)), for: .touchUpInside)
         ColourResponse.sharedInstance.apiCalendarDataResponseModel?.appointmentStatus?.forEach({ statusDetail in
             if statusDetail.code == indx?.appointmentStatusType {
                 //cell.statusOuterView.backgroundColor = UIColor(hexString: statusDetail.color!)
@@ -220,6 +278,82 @@ extension VendorTimeFinishedViewController : UITableViewDelegate, UITableViewDat
         vc.appointmentID = self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentID ?? 0
         vc.isModalInPresentation = true
         self.present(vc, animated: true, completion: nil)
+        
+    }
+    
+    @objc func moreInfoTapped(sender: UIButton){
+ 
+        let cell = vendorTimeOffTV.cellForRow(at: IndexPath(row: sender.tag, section: 0)) as! vendortimeofftableViewCell
+    
+        let sTime = cell.startTimeLbl.text
+        let eTime = cell.endTimeLbl.text
+        
+        
+        
+        print("TYPE STATUS IS \(self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].unicFlag  ?? "")")
+        if self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].unicFlag?.replacingOccurrences(of: " ", with: "") == "B"{
+            
+            if self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentType == "Onsite Interpretation" || self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentType == "ONSITE INTERPRTATION"{
+                let vc =   self.storyboard?.instantiateViewController(withIdentifier: "BlockedAppointmentVC") as! BlockedAppointmentVC
+                vc.appointmentID = self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentID ?? 0
+                
+                vc.startTime = sTime ?? ""
+                vc.endTime = eTime ?? ""
+                vc.modalPresentationStyle = .fullScreen
+                self.present(vc, animated: true, completion: nil)
+            }
+            else if self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentType == "Telephone Conference" || self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentType == "TELEPHONE CONFERENCE"{
+                let vc =   self.storyboard?.instantiateViewController(withIdentifier: "BlockedAppointmentTelephonicConferenceDetails") as! BlockedAppointmentTelephonicConferenceDetails
+                vc.appointmentID = self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentID ?? 0
+                
+                vc.startTime = sTime ?? ""
+                vc.endTime = eTime ?? ""
+                vc.modalPresentationStyle = .fullScreen
+                self.present(vc, animated: true, completion: nil)
+            }else if self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentType == "Virtual Meeting" || self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentType == "VIRTUAL MEETING"{
+                
+                let vc =   self.storyboard?.instantiateViewController(withIdentifier: "BlockedAppointmentVirtualMeetingDetails") as! BlockedAppointmentVirtualMeetingDetails
+                vc.appointmentID = self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentID ?? 0
+                
+                vc.startTime = sTime ?? ""
+                vc.endTime = eTime ?? ""
+                vc.modalPresentationStyle = .fullScreen
+                self.present(vc, animated: true, completion: nil)
+            }else {
+                return
+            }
+        }else {
+            if self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentType == "Onsite Interpretation" || self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentType == "ONSITE INTERPRTATION" {
+                let vc = self.storyboard?.instantiateViewController(identifier: "NewAppointmentDetailsVC") as! NewAppointmentDetailsVC
+                vc.appointmentID = self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentID ?? 0
+                vc.serviceType = self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentType ?? "N/A"
+                self.navigationController?.pushViewController(vc, animated: true)
+            }else if self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentType == "Telephone Conference" || self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentType == "TELEPHONE CONFERENCE" || self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentType == "Virtual Meeting" || self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentType == "VIRTUAL MEETING" {
+                
+                let vc = self.storyboard?.instantiateViewController(identifier: "TelephoneConferenceDetailsVC") as! TelephoneConferenceDetailsVC
+                vc.appointmentID = self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentID ?? 0
+                vc.serviceType = self.apiVendorTimeFinishResponseModel?.gETNEWTIMEFINISHEDLIST?[sender.tag].appointmentType ?? "N/A"
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                return
+//                let vc = self.storyboard?.instantiateViewController(identifier: "ScheduleDetailsVC") as! ScheduleDetailsVC
+//                vc.appointmentID = self.showAppointmentArr[indexPath.row]?.appointmentID ?? 0
+//                vc.serviceType = self.showAppointmentArr[indexPath.row]?.appointmentType ?? "N/A"
+//                print("vc.serviceType ", vc.serviceType)
+//                self.navigationController?.pushViewController(vc, animated: true)
+                
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
     }
     

@@ -29,10 +29,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         userNameTxtField.delegate=self
         passwordTxtField.delegate=self
+//        userNameTxtField.text = "Narendra_vendor1"
+//        passwordTxtField.text = "Total@user2021"
 //        userNameTxtField.text = "Leo_ven09"
 //        passwordTxtField.text = "Total@user2021"
-        userNameTxtField.text = "Leo_ven09"
-        passwordTxtField.text = "Total@user2021"
         
 //        Leo_ven09
 //        Total@user2021\
@@ -40,6 +40,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        
         
         let touchID = userDefaults.value(forKey: "touchID") ?? false //keychainServices.getKeychaindata(key: "touchID")
                 print("touch id after ", touchID)
@@ -189,7 +191,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
         else
     {
+        
+        if Reachability.isConnectedToNetwork(){
             self.postLoginDetails()
+        }else {
+            self.view.makeToast("Please check your internet connection")
+        }
+            
+        
+        
 //            self.doLogin()
     }
     }
@@ -249,104 +259,6 @@ extension LoginViewController {
                         print(error)
                     }
 
-            /*
-            var responseArray = responsedata["UserDetails"] as! NSArray
-         
-            if(responseArray.count > 0){
-                var responseDictionary = responseArray[0] as! NSDictionary
-                print(responseDictionary)
-                if(responseDictionary["TokenID"] as? String == "NA" ?? ""){
-                    self.view.makeToast(responseDictionary["Message"] as! String)
-                }
-
-                if(responseDictionary["Status"] != nil){
-                    if(responseDictionary["Status"] == nil){
-                        print("Invalid credentials")
-                        
-                    }
-                    if(responseDictionary["Status"] as! Int == 305){
-                        print(responseDictionary["Message"])
-                        
-                    }else{
-                        print(responseDictionary["You entered wrong password for more than 5 times, please reset your password"])
-                    }
-                
-                }
-             
-                if(responseDictionary["Status"] != nil){
-                    if(responseDictionary["Status"] as! Int == 88){
-                        
-                    }
-                    }else if(responseDictionary["VendorActive"] != nil && responseDictionary["UserTypeID"] != nil && responseDictionary["AdminJobApproval"] != nil){
-                        if(responseDictionary["VendorActive"] as! Int == 1 && responseDictionary["AdminJobApproval"]  as! Int == 0 && responseDictionary["UserTypeID"]  as! Int == 6){
-                            
-                            
-                            print("Waiting for Admin Approval. Please wait untill approve")
-                        
-                    }
-                }
-                 
-                if(responseDictionary["VendorActive"] != nil && responseDictionary["UserTypeID"] != nil ){
-                    
-                    if(responseDictionary["VendorActive"] == nil || responseDictionary["UserTypeID"] == nil){
-                        print("Invalid credentials")
-                    }
-                    if(responseDictionary["VendorActive"] as! Int == 0 && responseDictionary["UserTypeID"] as! Int  == 6){
-                        
-                        
-                        
-                        print("Please proceed through web to upload the documents (Interpreter Confidentiality Agreement, Independent Contractor Agreement, Criminal History Agreement, Business Associate Agreement, Medical Screening Form Agreement, Payroll Policy Agreement) for further registration process")
-                }
-                }
-                if(responseDictionary["Status"] != nil){
-                if(responseDictionary["UserTypeID"] as! Int ?? 0 == 6){
-                    UserDefaults.standard.setValue(responseDictionary["UserID"], forKey: "userID")
-                    
-                    
-                    let parameters = ["TokenID": UserDefaults.standard.object(forKey: "FCMToken")!, "Status": "Y", "UserID":UserDefaults.standard.object(forKey: "userID")!, "DeviceType": "I", "voipToken": UserDefaults.standard.object(forKey: "deviceID") ?? ""]
-                    NetworkLayer.shared.postRequest(url: APIs.Token_API, parameters: parameters) { response in
-                        
-                        //print("API Response ===\(response)")
-                        var responseData  = response as! NSDictionary
-                        var responsearray  = responseData["Table"] as! NSArray
-                        if(responsearray.count > 0){
-                            var dictResponce = responsearray[0] as! NSDictionary
-                            if(dictResponce["success"] as! Int == 1){
-                                if(dictResponce["CurrentUserGuid"] != nil){
-                                    
-                                    UserDefaults.standard.setValue(dictResponce["CurrentUserGuid"], forKey: "UserGuid")
-                                    let parameters = ["UserGuID":"DBCCFEE6-BB65-490E-AEFA-6B67CC30439D", "UserID":"218570"]
-                                    NetworkLayer.shared.postRequest(url: APIs.Checkuser_API, parameters: parameters) { response in
-                                        
-                                    print("API Response ===\(response)")
-                                    var getResponse  = response as! NSDictionary
-                                        if(getResponse["Status"] as! Int == 1){
-                                            activite.stopAnimating()
-                                            let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "dashbord") as? dashbord
-                                                            vc!.modalPresentationStyle = .fullScreen
-                                            self.present(vc!, animated: true, completion: nil)
-//                                                            self.navigationController?.pushViewController(vc!, animated: true)
-                                            
-                                        }
-                                        
-                                        
-                                        
-                            } failure: { error in
-                                //Handle Response
-                                print("API error ===\(error.localizedDescription)")
-                            }
-                            
-                        }
-                            }}
-                        
-                    } failure: { error in
-                        //Handle Response
-                        print("API error ===\(error.localizedDescription)")
-                    }
-            }
-            }
-            }
-            */
             //Handle Response
         } failure: { error in
             //Handle Response
@@ -519,6 +431,7 @@ extension LoginViewController{
                                    userDefaults.set(self.apiLoginResponseModel?.userDetails?.first?.timeZone, forKey: "TimeZone")
                                    
                                    UserDefaults.standard.setValue(self.apiUpdateDeviceTokenResponseModel?.table?.first?.currentUserGuid ?? 0, forKey: UserDeafultsString.instance.userGUID)
+                                   UserDefaults.standard.setValue(false, forKey: UserDeafultsString.instance.timeZoneDeclined)
                                    
                                 let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "dashbord") as? dashbord
                                     vc!.modalPresentationStyle = .fullScreen
@@ -609,4 +522,5 @@ public class UserDeafultsString{
     var TimeZone = "TimeZone"
     var TimeZone1 = "TimeZone1"
     var userGUID = "userGuID"
+    var timeZoneDeclined = "timeZoneDeclined"
 }

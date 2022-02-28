@@ -78,7 +78,7 @@ extension VRINewViewController{
          ]
          // print("😗---hitApiSignUpUser -" , Api.profile.url) 10/01/2021 */
         var userID = userDefaults.value(forKey: UserDeafultsString.instance.UserID)
-        let urlString = "https://lsp.totallanguage.com/Appointment/GetData?methodType=Companies%2CLanguageData&UserID=\(userID ?? "0")&UserType=Vendor&AppTypefg=2"//\(date)"
+        let urlString = "https://lsp.totallanguage.com/Appointment/GetData?methodType=Companies%2CLanguageData&UserID=\(userID ?? "0")&UserType=6&AppTypefg=2"//\(date)"
         print("url to get schedule \(urlString)")
         AF.request(urlString, method: .get , parameters: nil, encoding: JSONEncoding.default, headers: nil)
             .validate()

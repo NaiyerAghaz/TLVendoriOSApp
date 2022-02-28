@@ -32,13 +32,14 @@ class TimeZoneViewController: UIViewController {
     }
     
      @IBAction func actionDecline(_ sender: UIButton) {
+         UserDefaults.standard.setValue(true, forKey: UserDeafultsString.instance.timeZoneDeclined)
         self.dismiss(animated: true, completion: nil)
      }
     func updateTimeZoneWithParams(){
         SwiftLoader.show(animated: true)
         let userID = userDefaults.string(forKey: UserDeafultsString.instance.UserID) ?? ""
 //        let userID = GetPublicData.sharedInstance.userID
-        let timeZone = self.currentTimeZone.replacingOccurrences(of: " ", with: "")
+        let timeZone = self.currentTimeZone.replacingOccurrences(of: " ", with: "%20")
         let url = "https://lsp.totallanguage.com/Home/GetData?methodType=UPDATETIMEZONE&UserID=\(userID)&TZone=\(timeZone)"
         print("url to get time zone ", url )
         AF.request(url, method: .get , parameters: nil, encoding: JSONEncoding.default, headers: nil)

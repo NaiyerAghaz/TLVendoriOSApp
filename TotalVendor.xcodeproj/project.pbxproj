@@ -84,7 +84,11 @@
 		C40004E3273B928700E9AB67 /* VideoViewNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40004E2273B928700E9AB67 /* VideoViewNew.swift */; };
 		C40004E6273B965700E9AB67 /* NibView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40004E5273B965700E9AB67 /* NibView.swift */; };
 		C4053DCB27899AA4005548E1 /* TimeZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4053DCA27899AA4005548E1 /* TimeZoneViewController.swift */; };
+		C40F5A0A27C6651E00157AA6 /* ContentSizeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40F5A0927C6651E00157AA6 /* ContentSizeTableView.swift */; };
+		C414A14527C638A200347E50 /* AddReimbursementVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C414A14427C638A200347E50 /* AddReimbursementVC.swift */; };
 		C416127D279AB790006492B6 /* GrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C416127C279AB78F006492B6 /* GrowingTextView.swift */; };
+		C416721627B69683007077B0 /* ApiNotificationCountResponseModelNotificationCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = C416721427B69683007077B0 /* ApiNotificationCountResponseModelNotificationCount.swift */; };
+		C416721727B69683007077B0 /* ApiNotificationCountResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C416721527B69683007077B0 /* ApiNotificationCountResponseModel.swift */; };
 		C41900AA2771A49B0052F92E /* ApiVendorDetailDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C419009F2771A49B0052F92E /* ApiVendorDetailDataModel.swift */; };
 		C41900AB2771A49B0052F92E /* ApiVendorAddressDetailDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41900A02771A49B0052F92E /* ApiVendorAddressDetailDataModel.swift */; };
 		C41900AC2771A49B0052F92E /* ApiVendorBillingDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41900A12771A49B0052F92E /* ApiVendorBillingDetailModel.swift */; };
@@ -100,6 +104,9 @@
 		C41900BB2771A8570052F92E /* ApiVendorAppointmentStatusDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41900B72771A8570052F92E /* ApiVendorAppointmentStatusDataModel.swift */; };
 		C41900BC2771A8570052F92E /* ApiVendorTimeFinishResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41900B82771A8570052F92E /* ApiVendorTimeFinishResponseModel.swift */; };
 		C41900BD2771A8570052F92E /* ApiVendorAppointmentTypeDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41900B92771A8570052F92E /* ApiVendorAppointmentTypeDataModel.swift */; };
+		C41DE89C27C70609000CAAE9 /* ApiUploadedFileToS3ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41DE89B27C70609000CAAE9 /* ApiUploadedFileToS3ResponseModel.swift */; };
+		C41DE89E27C71837000CAAE9 /* RestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41DE89D27C71837000CAAE9 /* RestManager.swift */; };
+		C41DE8A027C71B01000CAAE9 /* MimeTYPE.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41DE89F27C71B01000CAAE9 /* MimeTYPE.swift */; };
 		C41FD86C27A27E3A0019F4F1 /* OPICallingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41FD86B27A27E3A0019F4F1 /* OPICallingViewController.swift */; };
 		C41FD86E27A29F6C0019F4F1 /* BlockedAppointmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41FD86D27A29F6C0019F4F1 /* BlockedAppointmentVC.swift */; };
 		C4219DCF2754EA090056AD76 /* NewSideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4219DCE2754EA090056AD76 /* NewSideMenuViewController.swift */; };
@@ -108,15 +115,23 @@
 		C4280E02279E9FA600BCA7BD /* ApiGetVendorDetailsApiResponseModelInterpreterData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4280E00279E9FA600BCA7BD /* ApiGetVendorDetailsApiResponseModelInterpreterData.swift */; };
 		C431EA6F277A0702006695B8 /* NewAppointmentDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C431EA6E277A0702006695B8 /* NewAppointmentDetailsVC.swift */; };
 		C431EA71277A0B7A006695B8 /* ApiOnsiteDetailsResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C431EA70277A0B7A006695B8 /* ApiOnsiteDetailsResponseModel.swift */; };
+		C4337BEF27C9CBBC00FBFA0B /* ReimbursedDocumentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4337BEE27C9CBBB00FBFA0B /* ReimbursedDocumentsVC.swift */; };
+		C4405ED427C4B90700DECCD5 /* DownloaderClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4405ED327C4B90700DECCD5 /* DownloaderClass.swift */; };
+		C4423F3127CB77340033CF3D /* BlockedAppointmentTelephonicConferenceDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4423F3027CB77340033CF3D /* BlockedAppointmentTelephonicConferenceDetails.swift */; };
 		C443577E2763390B0093F3F7 /* VRIAndOPILogsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C443577D2763390B0093F3F7 /* VRIAndOPILogsVC.swift */; };
 		C4441BB227A3D424000741CB /* ChatScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4441BB127A3D424000741CB /* ChatScreenViewController.swift */; };
 		C445004F2759FF92007813D8 /* VRINewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445004E2759FF92007813D8 /* VRINewViewController.swift */; };
 		C44521AC27A92DDE00AEFA25 /* VendorTimeOffNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44521AB27A92DDD00AEFA25 /* VendorTimeOffNewViewController.swift */; };
+		C44D40E827C4FF1600D4725C /* Public Class Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44D40E727C4FF1600D4725C /* Public Class Utility.swift */; };
 		C4577C8A27A95604005DBB8C /* ApiVendorTimeOffResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4577C8827A95604005DBB8C /* ApiVendorTimeOffResponseModel.swift */; };
 		C4577C8B27A95604005DBB8C /* ApiVendorTimeOffTimeOffs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4577C8927A95604005DBB8C /* ApiVendorTimeOffTimeOffs.swift */; };
 		C45998AB274BAD9600B4F9D7 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7324E33226CCE75A00651703 /* CloudKit.framework */; };
 		C45998AE274BAD9700B4F9D7 /* Pods_TotalVendor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC617B38A31812CA0B5F76F /* Pods_TotalVendor.framework */; };
 		C45C19C527981DD500D9726D /* UploadedDocumentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45C19C427981DD500D9726D /* UploadedDocumentsVC.swift */; };
+		C45C5B0727CC8CF40094A65B /* BlockedAppointmentVirtualMeetingDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45C5B0627CC8CF40094A65B /* BlockedAppointmentVirtualMeetingDetails.swift */; };
+		C45C5B0927CC97130094A65B /* CopyableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45C5B0827CC97130094A65B /* CopyableLabel.swift */; };
+		C45D929E27CBE8F5000B4196 /* SignatureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45D929D27CBE8F5000B4196 /* SignatureVC.swift */; };
+		C4622A5E27BB872A00748399 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4622A5D27BB872A00748399 /* Reachability.swift */; };
 		C467E2312762057400BFE622 /* ApiLanguageDataResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C467E22F2762057400BFE622 /* ApiLanguageDataResponseModel.swift */; };
 		C467E2322762057400BFE622 /* ApiLanguageDataResponseModelLanguageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C467E2302762057400BFE622 /* ApiLanguageDataResponseModelLanguageData.swift */; };
 		C48228C6279FA3D2008A61C0 /* CameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48228C5279FA3D2008A61C0 /* CameraHandler.swift */; };
@@ -127,12 +142,21 @@
 		C499A5BA274E5FD60067E195 /* TimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499A5B9274E5FD50067E195 /* TimeFormatter.swift */; };
 		C49DFFF727674A91009F5E77 /* ApiAvailabilityStatusUpdateStatusResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49DFFF527674A91009F5E77 /* ApiAvailabilityStatusUpdateStatusResponseModel.swift */; };
 		C49DFFF827674A91009F5E77 /* ApiAvailabilityStatusResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49DFFF627674A91009F5E77 /* ApiAvailabilityStatusResponseModel.swift */; };
+		C4A40C6027C916260066F08C /* ApiAdditionalReimbursementResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A40C5F27C916260066F08C /* ApiAdditionalReimbursementResponseModel.swift */; };
+		C4A7C3DC27C89FB300F7C59D /* OpenFilesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A7C3DB27C89FB300F7C59D /* OpenFilesVC.swift */; };
+		C4A7C3DE27C8ACA100F7C59D /* ApiUploadDocumentResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A7C3DD27C8ACA100F7C59D /* ApiUploadDocumentResponseModel.swift */; };
+		C4B521F227BE61D5005FDB4D /* ApiNotificationCountStaff.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B521F027BE61D4005FDB4D /* ApiNotificationCountStaff.swift */; };
+		C4B521F327BE61D5005FDB4D /* ApiNotificationCountNewResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B521F127BE61D4005FDB4D /* ApiNotificationCountNewResponseModel.swift */; };
+		C4B8507827AAA399006F9ABA /* ApiUpdateVenorTimeOffTimeeOFfData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B8507627AAA399006F9ABA /* ApiUpdateVenorTimeOffTimeeOFfData.swift */; };
+		C4B8507927AAA399006F9ABA /* ApiUpdateVenorTimeOffResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B8507727AAA399006F9ABA /* ApiUpdateVenorTimeOffResponseModel.swift */; };
 		C4D005562768703F0020D67A /* ExtensionsTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D005552768703F0020D67A /* ExtensionsTextField.swift */; };
 		C4D00A072771AEE900EA09F1 /* AnnularLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D00A042771AEE800EA09F1 /* AnnularLayer.swift */; };
 		C4D00A082771AEE900EA09F1 /* LineLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D00A052771AEE800EA09F1 /* LineLayer.swift */; };
 		C4D00A092771AEE900EA09F1 /* StepIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D00A062771AEE800EA09F1 /* StepIndicatorView.swift */; };
 		C4DE58AC278FF973005A3B98 /* ApiCheckSingleSignInResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DE58AB278FF973005A3B98 /* ApiCheckSingleSignInResponseModel.swift */; };
 		C4DE58AE279022B6005A3B98 /* ApiLogoutFromWebResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DE58AD279022B6005A3B98 /* ApiLogoutFromWebResponseModel.swift */; };
+		C4E4A5C327AA4DF500993A4B /* VendorTimeOffAddEditionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E4A5C227AA4DF400993A4B /* VendorTimeOffAddEditionVC.swift */; };
+		C4E9752A27B3F3AD008AD899 /* ExtensionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E9752927B3F3AD008AD899 /* ExtensionTableView.swift */; };
 		C4E9CB25274F7101005DAD5B /* BookingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E9CB24274F7101005DAD5B /* BookingDetailViewController.swift */; };
 		C4E9CB28274F72B1005DAD5B /* ApiAppointmentDetailDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E9CB26274F72B1005DAD5B /* ApiAppointmentDetailDataModel.swift */; };
 		C4E9CB29274F72B1005DAD5B /* ApiBookingDetailresponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E9CB27274F72B1005DAD5B /* ApiBookingDetailresponseModel.swift */; };
@@ -253,7 +277,11 @@
 		C40004E2273B928700E9AB67 /* VideoViewNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewNew.swift; sourceTree = "<group>"; };
 		C40004E5273B965700E9AB67 /* NibView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibView.swift; sourceTree = "<group>"; };
 		C4053DCA27899AA4005548E1 /* TimeZoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneViewController.swift; sourceTree = "<group>"; };
+		C40F5A0927C6651E00157AA6 /* ContentSizeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizeTableView.swift; sourceTree = "<group>"; };
+		C414A14427C638A200347E50 /* AddReimbursementVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReimbursementVC.swift; sourceTree = "<group>"; };
 		C416127C279AB78F006492B6 /* GrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
+		C416721427B69683007077B0 /* ApiNotificationCountResponseModelNotificationCount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiNotificationCountResponseModelNotificationCount.swift; sourceTree = "<group>"; };
+		C416721527B69683007077B0 /* ApiNotificationCountResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiNotificationCountResponseModel.swift; sourceTree = "<group>"; };
 		C419009F2771A49B0052F92E /* ApiVendorDetailDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiVendorDetailDataModel.swift; sourceTree = "<group>"; };
 		C41900A02771A49B0052F92E /* ApiVendorAddressDetailDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiVendorAddressDetailDataModel.swift; sourceTree = "<group>"; };
 		C41900A12771A49B0052F92E /* ApiVendorBillingDetailModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiVendorBillingDetailModel.swift; sourceTree = "<group>"; };
@@ -269,6 +297,9 @@
 		C41900B72771A8570052F92E /* ApiVendorAppointmentStatusDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiVendorAppointmentStatusDataModel.swift; sourceTree = "<group>"; };
 		C41900B82771A8570052F92E /* ApiVendorTimeFinishResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiVendorTimeFinishResponseModel.swift; sourceTree = "<group>"; };
 		C41900B92771A8570052F92E /* ApiVendorAppointmentTypeDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiVendorAppointmentTypeDataModel.swift; sourceTree = "<group>"; };
+		C41DE89B27C70609000CAAE9 /* ApiUploadedFileToS3ResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiUploadedFileToS3ResponseModel.swift; sourceTree = "<group>"; };
+		C41DE89D27C71837000CAAE9 /* RestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestManager.swift; sourceTree = "<group>"; };
+		C41DE89F27C71B01000CAAE9 /* MimeTYPE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MimeTYPE.swift; sourceTree = "<group>"; };
 		C41FD86B27A27E3A0019F4F1 /* OPICallingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OPICallingViewController.swift; sourceTree = "<group>"; };
 		C41FD86D27A29F6C0019F4F1 /* BlockedAppointmentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedAppointmentVC.swift; sourceTree = "<group>"; };
 		C4219DCE2754EA090056AD76 /* NewSideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSideMenuViewController.swift; sourceTree = "<group>"; };
@@ -277,13 +308,21 @@
 		C4280E00279E9FA600BCA7BD /* ApiGetVendorDetailsApiResponseModelInterpreterData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiGetVendorDetailsApiResponseModelInterpreterData.swift; sourceTree = "<group>"; };
 		C431EA6E277A0702006695B8 /* NewAppointmentDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAppointmentDetailsVC.swift; sourceTree = "<group>"; };
 		C431EA70277A0B7A006695B8 /* ApiOnsiteDetailsResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiOnsiteDetailsResponseModel.swift; sourceTree = "<group>"; };
+		C4337BEE27C9CBBB00FBFA0B /* ReimbursedDocumentsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReimbursedDocumentsVC.swift; sourceTree = "<group>"; };
+		C4405ED327C4B90700DECCD5 /* DownloaderClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloaderClass.swift; sourceTree = "<group>"; };
+		C4423F3027CB77340033CF3D /* BlockedAppointmentTelephonicConferenceDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedAppointmentTelephonicConferenceDetails.swift; sourceTree = "<group>"; };
 		C443577D2763390B0093F3F7 /* VRIAndOPILogsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VRIAndOPILogsVC.swift; sourceTree = "<group>"; };
 		C4441BB127A3D424000741CB /* ChatScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatScreenViewController.swift; sourceTree = "<group>"; };
 		C445004E2759FF92007813D8 /* VRINewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VRINewViewController.swift; sourceTree = "<group>"; };
 		C44521AB27A92DDD00AEFA25 /* VendorTimeOffNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorTimeOffNewViewController.swift; sourceTree = "<group>"; };
+		C44D40E727C4FF1600D4725C /* Public Class Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Public Class Utility.swift"; sourceTree = "<group>"; };
 		C4577C8827A95604005DBB8C /* ApiVendorTimeOffResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiVendorTimeOffResponseModel.swift; sourceTree = "<group>"; };
 		C4577C8927A95604005DBB8C /* ApiVendorTimeOffTimeOffs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiVendorTimeOffTimeOffs.swift; sourceTree = "<group>"; };
 		C45C19C427981DD500D9726D /* UploadedDocumentsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedDocumentsVC.swift; sourceTree = "<group>"; };
+		C45C5B0627CC8CF40094A65B /* BlockedAppointmentVirtualMeetingDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedAppointmentVirtualMeetingDetails.swift; sourceTree = "<group>"; };
+		C45C5B0827CC97130094A65B /* CopyableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyableLabel.swift; sourceTree = "<group>"; };
+		C45D929D27CBE8F5000B4196 /* SignatureVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureVC.swift; sourceTree = "<group>"; };
+		C4622A5D27BB872A00748399 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		C467E22F2762057400BFE622 /* ApiLanguageDataResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiLanguageDataResponseModel.swift; sourceTree = "<group>"; };
 		C467E2302762057400BFE622 /* ApiLanguageDataResponseModelLanguageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiLanguageDataResponseModelLanguageData.swift; sourceTree = "<group>"; };
 		C48228C5279FA3D2008A61C0 /* CameraHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraHandler.swift; sourceTree = "<group>"; };
@@ -294,12 +333,21 @@
 		C499A5B9274E5FD50067E195 /* TimeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeFormatter.swift; sourceTree = "<group>"; };
 		C49DFFF527674A91009F5E77 /* ApiAvailabilityStatusUpdateStatusResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiAvailabilityStatusUpdateStatusResponseModel.swift; sourceTree = "<group>"; };
 		C49DFFF627674A91009F5E77 /* ApiAvailabilityStatusResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiAvailabilityStatusResponseModel.swift; sourceTree = "<group>"; };
+		C4A40C5F27C916260066F08C /* ApiAdditionalReimbursementResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiAdditionalReimbursementResponseModel.swift; sourceTree = "<group>"; };
+		C4A7C3DB27C89FB300F7C59D /* OpenFilesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFilesVC.swift; sourceTree = "<group>"; };
+		C4A7C3DD27C8ACA100F7C59D /* ApiUploadDocumentResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiUploadDocumentResponseModel.swift; sourceTree = "<group>"; };
+		C4B521F027BE61D4005FDB4D /* ApiNotificationCountStaff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiNotificationCountStaff.swift; sourceTree = "<group>"; };
+		C4B521F127BE61D4005FDB4D /* ApiNotificationCountNewResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiNotificationCountNewResponseModel.swift; sourceTree = "<group>"; };
+		C4B8507627AAA399006F9ABA /* ApiUpdateVenorTimeOffTimeeOFfData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiUpdateVenorTimeOffTimeeOFfData.swift; sourceTree = "<group>"; };
+		C4B8507727AAA399006F9ABA /* ApiUpdateVenorTimeOffResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiUpdateVenorTimeOffResponseModel.swift; sourceTree = "<group>"; };
 		C4D005552768703F0020D67A /* ExtensionsTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsTextField.swift; sourceTree = "<group>"; };
 		C4D00A042771AEE800EA09F1 /* AnnularLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnularLayer.swift; sourceTree = "<group>"; };
 		C4D00A052771AEE800EA09F1 /* LineLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineLayer.swift; sourceTree = "<group>"; };
 		C4D00A062771AEE800EA09F1 /* StepIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepIndicatorView.swift; sourceTree = "<group>"; };
 		C4DE58AB278FF973005A3B98 /* ApiCheckSingleSignInResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiCheckSingleSignInResponseModel.swift; sourceTree = "<group>"; };
 		C4DE58AD279022B6005A3B98 /* ApiLogoutFromWebResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiLogoutFromWebResponseModel.swift; sourceTree = "<group>"; };
+		C4E4A5C227AA4DF400993A4B /* VendorTimeOffAddEditionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorTimeOffAddEditionVC.swift; sourceTree = "<group>"; };
+		C4E9752927B3F3AD008AD899 /* ExtensionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionTableView.swift; sourceTree = "<group>"; };
 		C4E9CB24274F7101005DAD5B /* BookingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingDetailViewController.swift; sourceTree = "<group>"; };
 		C4E9CB26274F72B1005DAD5B /* ApiAppointmentDetailDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiAppointmentDetailDataModel.swift; sourceTree = "<group>"; };
 		C4E9CB27274F72B1005DAD5B /* ApiBookingDetailresponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiBookingDetailresponseModel.swift; sourceTree = "<group>"; };
@@ -507,6 +555,13 @@
 				C41FD86D27A29F6C0019F4F1 /* BlockedAppointmentVC.swift */,
 				C4441BB127A3D424000741CB /* ChatScreenViewController.swift */,
 				C44521AB27A92DDD00AEFA25 /* VendorTimeOffNewViewController.swift */,
+				C4E4A5C227AA4DF400993A4B /* VendorTimeOffAddEditionVC.swift */,
+				C414A14427C638A200347E50 /* AddReimbursementVC.swift */,
+				C4A7C3DB27C89FB300F7C59D /* OpenFilesVC.swift */,
+				C4337BEE27C9CBBB00FBFA0B /* ReimbursedDocumentsVC.swift */,
+				C4423F3027CB77340033CF3D /* BlockedAppointmentTelephonicConferenceDetails.swift */,
+				C45D929D27CBE8F5000B4196 /* SignatureVC.swift */,
+				C45C5B0627CC8CF40094A65B /* BlockedAppointmentVirtualMeetingDetails.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -523,6 +578,12 @@
 		73851D8526F079A600C58848 /* ApiResponseModels */ = {
 			isa = PBXGroup;
 			children = (
+				C4A40C5F27C916260066F08C /* ApiAdditionalReimbursementResponseModel.swift */,
+				C4A7C3DD27C8ACA100F7C59D /* ApiUploadDocumentResponseModel.swift */,
+				C41DE89B27C70609000CAAE9 /* ApiUploadedFileToS3ResponseModel.swift */,
+				C4B521EF27BE61D4005FDB4D /* ApiNotificationCountNewResponseModel */,
+				C416721327B69683007077B0 /* ApiNotificationCountResponseModel */,
+				C4B8507527AAA399006F9ABA /* ApiUpdateVenorTimeOffResponseModel */,
 				C4577C8727A95604005DBB8C /* ApiVendorTimeOffResponseModel */,
 				C4280DFE279E9FA600BCA7BD /* ApiGetVendorTimeFinishedDetailsApiResponseModel */,
 				C491A0B02799440800282B9E /* ApiUploadedFileListResponseModel */,
@@ -589,6 +650,8 @@
 		73ECCC7826CEAE490055A159 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				C41DE89D27C71837000CAAE9 /* RestManager.swift */,
+				C4405ED327C4B90700DECCD5 /* DownloaderClass.swift */,
 				C4D00A032771AEE800EA09F1 /* stepperView */,
 				73ECCC7926CEAE490055A159 /* SettingsTableViewController.swift */,
 				73ECCC7A26CEAE490055A159 /* Settings.swift */,
@@ -600,8 +663,23 @@
 				C4D005552768703F0020D67A /* ExtensionsTextField.swift */,
 				C416127C279AB78F006492B6 /* GrowingTextView.swift */,
 				C48228C5279FA3D2008A61C0 /* CameraHandler.swift */,
+				C4E9752927B3F3AD008AD899 /* ExtensionTableView.swift */,
+				C4622A5D27BB872A00748399 /* Reachability.swift */,
+				C44D40E727C4FF1600D4725C /* Public Class Utility.swift */,
+				C40F5A0927C6651E00157AA6 /* ContentSizeTableView.swift */,
+				C41DE89F27C71B01000CAAE9 /* MimeTYPE.swift */,
+				C45C5B0827CC97130094A65B /* CopyableLabel.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		C416721327B69683007077B0 /* ApiNotificationCountResponseModel */ = {
+			isa = PBXGroup;
+			children = (
+				C416721427B69683007077B0 /* ApiNotificationCountResponseModelNotificationCount.swift */,
+				C416721527B69683007077B0 /* ApiNotificationCountResponseModel.swift */,
+			);
+			path = ApiNotificationCountResponseModel;
 			sourceTree = "<group>";
 		};
 		C419009E2771A49B0052F92E /* vendorDetailDataModel */ = {
@@ -676,6 +754,24 @@
 				C49DFFF627674A91009F5E77 /* ApiAvailabilityStatusResponseModel.swift */,
 			);
 			path = ApiAvailabilityStatusResponseModel;
+			sourceTree = "<group>";
+		};
+		C4B521EF27BE61D4005FDB4D /* ApiNotificationCountNewResponseModel */ = {
+			isa = PBXGroup;
+			children = (
+				C4B521F027BE61D4005FDB4D /* ApiNotificationCountStaff.swift */,
+				C4B521F127BE61D4005FDB4D /* ApiNotificationCountNewResponseModel.swift */,
+			);
+			path = ApiNotificationCountNewResponseModel;
+			sourceTree = "<group>";
+		};
+		C4B8507527AAA399006F9ABA /* ApiUpdateVenorTimeOffResponseModel */ = {
+			isa = PBXGroup;
+			children = (
+				C4B8507627AAA399006F9ABA /* ApiUpdateVenorTimeOffTimeeOFfData.swift */,
+				C4B8507727AAA399006F9ABA /* ApiUpdateVenorTimeOffResponseModel.swift */,
+			);
+			path = ApiUpdateVenorTimeOffResponseModel;
 			sourceTree = "<group>";
 		};
 		C4D00A032771AEE800EA09F1 /* stepperView */ = {
@@ -1001,13 +1097,17 @@
 				D99CCB5E26CCC7A7008FD9D5 /* AppConstants.swift in Sources */,
 				C491A0B32799440800282B9E /* ApiUploadedFileListResponseModel.swift in Sources */,
 				C4FD06F42747CABE00559C3E /* ApiNotificationResponseModel.swift in Sources */,
+				C416721727B69683007077B0 /* ApiNotificationCountResponseModel.swift in Sources */,
 				C491511127831BD3007CAED8 /* GetPublicClass.swift in Sources */,
 				733F923B26C50AE9000F3ADF /* SignUpInfoViewController.swift in Sources */,
+				C45D929E27CBE8F5000B4196 /* SignatureVC.swift in Sources */,
 				C4D00A072771AEE900EA09F1 /* AnnularLayer.swift in Sources */,
 				733F925F26C5395B000F3ADF /* VideoCallViewController.swift in Sources */,
+				C41DE89E27C71837000CAAE9 /* RestManager.swift in Sources */,
 				29C3916C2784630200E1E055 /* ApiAcceptByVendorRequestDataModel.swift in Sources */,
 				C416127D279AB790006492B6 /* GrowingTextView.swift in Sources */,
 				733F925526C51DDF000F3ADF /* VendorCallHistoryViewController.swift in Sources */,
+				C416721627B69683007077B0 /* ApiNotificationCountResponseModelNotificationCount.swift in Sources */,
 				C491A0B62799848F00282B9E /* VendorTimeFinishDetailsVC.swift in Sources */,
 				733F925126C51D75000F3ADF /* SupportViewController.swift in Sources */,
 				C48228C6279FA3D2008A61C0 /* CameraHandler.swift in Sources */,
@@ -1025,6 +1125,8 @@
 				C41900B32771A49B0052F92E /* ApiVendorEmailNotificationDataModel.swift in Sources */,
 				C4D005562768703F0020D67A /* ExtensionsTextField.swift in Sources */,
 				C41900BB2771A8570052F92E /* ApiVendorAppointmentStatusDataModel.swift in Sources */,
+				C4B8507927AAA399006F9ABA /* ApiUpdateVenorTimeOffResponseModel.swift in Sources */,
+				C45C5B0727CC8CF40094A65B /* BlockedAppointmentVirtualMeetingDetails.swift in Sources */,
 				C4D00A092771AEE900EA09F1 /* StepIndicatorView.swift in Sources */,
 				73ECCC7D26CEAE490055A159 /* SettingsTableViewController.swift in Sources */,
 				C499A5BA274E5FD60067E195 /* TimeFormatter.swift in Sources */,
@@ -1049,13 +1151,20 @@
 				7393D8BA272BDA0300501237 /* MFBadgeButton.swift in Sources */,
 				C4E9CB25274F7101005DAD5B /* BookingDetailViewController.swift in Sources */,
 				73148C9126CA2FEC00B00E47 /* URLModel.swift in Sources */,
+				C4A7C3DC27C89FB300F7C59D /* OpenFilesVC.swift in Sources */,
 				C41900AB2771A49B0052F92E /* ApiVendorAddressDetailDataModel.swift in Sources */,
 				73851D8326F0799B00C58848 /* ApiLoginResponseModel.swift in Sources */,
 				73ECCC7F26CEAE490055A159 /* Utils.swift in Sources */,
 				73ECCC7E26CEAE490055A159 /* Settings.swift in Sources */,
 				739A892A2727D871003841BE /* SwiftLoader.swift in Sources */,
+				C4B521F227BE61D5005FDB4D /* ApiNotificationCountStaff.swift in Sources */,
 				733F923726C50A2F000F3ADF /* SignUpViewController.swift in Sources */,
+				C44D40E827C4FF1600D4725C /* Public Class Utility.swift in Sources */,
+				C4A40C6027C916260066F08C /* ApiAdditionalReimbursementResponseModel.swift in Sources */,
 				D99CCB5B26CCC76A008FD9D5 /* APIManager.swift in Sources */,
+				C4405ED427C4B90700DECCD5 /* DownloaderClass.swift in Sources */,
+				C4622A5E27BB872A00748399 /* Reachability.swift in Sources */,
+				C4A7C3DE27C8ACA100F7C59D /* ApiUploadDocumentResponseModel.swift in Sources */,
 				733F920126C4EC35000F3ADF /* ViewController.swift in Sources */,
 				73BFCF8C270ADC3D00773A70 /* AcceptMemberCallAppDataResponseModel.swift in Sources */,
 				733F91FD26C4EC35000F3ADF /* AppDelegate.swift in Sources */,
@@ -1063,6 +1172,7 @@
 				C41FD86E27A29F6C0019F4F1 /* BlockedAppointmentVC.swift in Sources */,
 				C4577C8A27A95604005DBB8C /* ApiVendorTimeOffResponseModel.swift in Sources */,
 				C41900BD2771A8570052F92E /* ApiVendorAppointmentTypeDataModel.swift in Sources */,
+				C4E4A5C327AA4DF500993A4B /* VendorTimeOffAddEditionVC.swift in Sources */,
 				733F920726C4EC35000F3ADF /* TotalVendor.xcdatamodeld in Sources */,
 				73924C7C26F31EBE001F622F /* ApiUpdateTokenResponseTable.swift in Sources */,
 				C4F1EBEE27799B5700B2448B /* ScheduleDetailsVC.swift in Sources */,
@@ -1077,26 +1187,35 @@
 				73BFCF8D270ADC3D00773A70 /* AcceptMemberResponseModel.swift in Sources */,
 				C41900BA2771A8570052F92E /* ApiGETNEWTIMEFINISHEDLISTDataModel.swift in Sources */,
 				C41900AE2771A49B0052F92E /* ApiVendorInterpretationTypeDataModel.swift in Sources */,
+				C45C5B0927CC97130094A65B /* CopyableLabel.swift in Sources */,
 				C443577E2763390B0093F3F7 /* VRIAndOPILogsVC.swift in Sources */,
+				C4B521F327BE61D5005FDB4D /* ApiNotificationCountNewResponseModel.swift in Sources */,
 				73270A8626C575E500A6F649 /* ParticipantsViewController.swift in Sources */,
 				D96184D726CBCE8C00A03144 /* VideoAndAudioCallVc.swift in Sources */,
+				C414A14527C638A200347E50 /* AddReimbursementVC.swift in Sources */,
 				7355607527171A540041D81D /* ExtensionVisibilityUIView.swift in Sources */,
 				C41900AF2771A49B0052F92E /* ApiVendorColorDataModel.swift in Sources */,
 				C4E9CB29274F72B1005DAD5B /* ApiBookingDetailresponseModel.swift in Sources */,
+				C41DE8A027C71B01000CAAE9 /* MimeTYPE.swift in Sources */,
 				733F925726C51E00000F3ADF /* PaymentsViewController.swift in Sources */,
 				733F924526C51B9B000F3ADF /* DocumentTranslationViewController.swift in Sources */,
+				C4E9752A27B3F3AD008AD899 /* ExtensionTableView.swift in Sources */,
 				73851D8426F0799B00C58848 /* ApiLoginResponseModelUserDetails.swift in Sources */,
 				733F924F26C51C65000F3ADF /* ForgotViewController.swift in Sources */,
 				C4DE58AC278FF973005A3B98 /* ApiCheckSingleSignInResponseModel.swift in Sources */,
+				C41DE89C27C70609000CAAE9 /* ApiUploadedFileToS3ResponseModel.swift in Sources */,
 				733F924726C51BB6000F3ADF /* TelephoneConferenceServiceViewController.swift in Sources */,
 				73ECCC8026CEAE490055A159 /* Colors.swift in Sources */,
 				733F924926C51C11000F3ADF /* InitialViewController.swift in Sources */,
 				C4280E01279E9FA600BCA7BD /* ApiGetVendorTimeFinishedDetailsApiResponseModel.swift in Sources */,
+				C4423F3127CB77340033CF3D /* BlockedAppointmentTelephonicConferenceDetails.swift in Sources */,
 				C4577C8B27A95604005DBB8C /* ApiVendorTimeOffTimeOffs.swift in Sources */,
 				C445004F2759FF92007813D8 /* VRINewViewController.swift in Sources */,
+				C40F5A0A27C6651E00157AA6 /* ContentSizeTableView.swift in Sources */,
 				C49DFFF827674A91009F5E77 /* ApiAvailabilityStatusResponseModel.swift in Sources */,
 				C467E2312762057400BFE622 /* ApiLanguageDataResponseModel.swift in Sources */,
 				73270A9026C580C200A6F649 /* RatingViewController.swift in Sources */,
+				C4B8507827AAA399006F9ABA /* ApiUpdateVenorTimeOffTimeeOFfData.swift in Sources */,
 				73C1E7FE27350C8F00139C8F /* RoomViewModel.swift in Sources */,
 				C41FD86C27A27E3A0019F4F1 /* OPICallingViewController.swift in Sources */,
 				D99CCB5A26CCC76A008FD9D5 /* EndPoints.swift in Sources */,
@@ -1106,6 +1225,7 @@
 				C41900BC2771A8570052F92E /* ApiVendorTimeFinishResponseModel.swift in Sources */,
 				C4219DCF2754EA090056AD76 /* NewSideMenuViewController.swift in Sources */,
 				73270A8E26C57DE400A6F649 /* ParticipantsCell.swift in Sources */,
+				C4337BEF27C9CBBC00FBFA0B /* ReimbursedDocumentsVC.swift in Sources */,
 				7393D8BC272C380900501237 /* ApiCalendarDataResponseModel.swift in Sources */,
 				C41900AA2771A49B0052F92E /* ApiVendorDetailDataModel.swift in Sources */,
 				C41900B12771A49B0052F92E /* ApiVendorDetailResponseModel.swift in Sources */,
@@ -1287,7 +1407,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = TotalVendor/TotalVendor.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 6Z22496273;
 				INFOPLIST_FILE = TotalVendor/Info.plist;
@@ -1296,10 +1416,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.48;
+				MARKETING_VERSION = 1.58;
 				PRODUCT_BUNDLE_IDENTIFIER = com.TotalLanguage.Vendor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Total Language Vendor Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "Total Language Vendor Live";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1312,7 +1432,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = TotalVendor/TotalVendor.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 6Z22496273;
 				INFOPLIST_FILE = TotalVendor/Info.plist;
@@ -1321,10 +1441,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.48;
+				MARKETING_VERSION = 1.58;
 				PRODUCT_BUNDLE_IDENTIFIER = com.TotalLanguage.Vendor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Total Language Vendor Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "Total Language Vendor Live";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

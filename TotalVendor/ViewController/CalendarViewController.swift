@@ -16,12 +16,15 @@ var userDefaults = UserDefaults.standard
 class CalendarViewController: UIViewController, UITableViewDelegate,UITableViewDataSource,CLLocationManagerDelegate {
     var Live_BASE_URL = "https://lsp.totallanguage.com/"
     @IBOutlet weak var companyLogoIcon: UIImageView!
+    var apiNotificationCountResponseModel : ApiNotificationCountResponseModel?
     @IBOutlet weak var availabilityStatusSwitch: UISwitch!
     var apiLogoutApi : ApiUpdateTokenResponseModel?
     var menu : SideMenuNavigationController!
     @IBOutlet weak var notificationBtn: MIBadgeButton!
     var apiGoogleTimeZoneresponse:ApiGoogleTimeZoneresponse?
     var cLocationManager = CLLocationManager()
+    var apiNotificationCountNewResponseModel : ApiNotificationCountNewResponseModel?
+//https://lsp.totallanguage.com/Home/GetData?methodType=NotificationsCounts%2CNOTIFICATIONSCOUNTSSTAFF%2CGETSYSTEMADMINNOTIFICATION&UserID=219342&CompanyId=52
     var apiCheckCallStatusResponseModel = [ApiCheckSingleSignInResponseModel]()
     @IBOutlet weak var userNameLbl: UILabel!
     var lattitude = "0.0"
@@ -31,22 +34,28 @@ class CalendarViewController: UIViewController, UITableViewDelegate,UITableViewD
     @IBOutlet weak var dashboardTableView: UITableView!
     var apiScheduleAppointmentResponseModel : ApiCalendarDataResponseModel?
     var dataTask:URLSessionDataTask!
+    var pullToRefreshCalled = false
     var URLReqObj:URLRequest!
     @IBOutlet weak var calendarTableView: UITableView!
     @IBOutlet weak var noDataLabel: UILabel!
+    @IBOutlet weak var vriOpiView: UIView!
     @IBOutlet weak var calendarView: FSCalendar!
     var showAppointmentArr = [ApiCalendarDataVendorScheduleData?]()
     var calenderObject = FSCalendar()
     var apiGetSpecialityDataModel:ApiGetSpecialityDataModel?
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.checkSingleSignin()
-        dashboardTableView.spr_beginRefreshing()
-        self.locAuthentication()
-        
         let userId = userDefaults.string(forKey: UserDeafultsString.instance.UserID) ?? ""
-        self.getCurrentAvailableStatus(customerId: userId)
+        if Reachability.isConnectedToNetwork(){
+            self.getNotificatioDetail()
+            self.checkSingleSignin()
+            self.getCurrentAvailableStatus(customerId: userId)
+            self.locAuthentication()
+        }else {
+            self.view.makeToast("Please check your internet connection")
+        }
         
+        dashboardTableView.spr_beginRefreshing()
     }
     
     
@@ -61,8 +70,17 @@ class CalendarViewController: UIViewController, UITableViewDelegate,UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        Narendra_vendor1
+//        Total@user2021
+        
+     
+        
+        vriOpiView.visibility = .gone
         dashboardTableView.spr_setIndicatorHeader { [weak self] in
-            self?.action()
+            DispatchQueue.main.async {
+                self?.action()
+            }
         }
         getServiceType()
         let imageData = (userDefaults.value(forKey: UserDeafultsString.instance.CompanyLogo) ?? "")
@@ -74,22 +92,19 @@ class CalendarViewController: UIViewController, UITableViewDelegate,UITableViewD
             self.companyLogoIcon.image = UIImage(named: "logo")
             
         }
-        
-        
-        
         userNameLbl.text = UserDefaults.standard.value(forKey: UserDeafultsString.instance.CompanyName) as? String ?? ""
         notificationBtn.badgeString = "0"
         notificationBtn.badgeBackgroundColor = #colorLiteral(red: 0, green: 0.5686412892, blue: 0, alpha: 1)
         notificationBtn.badgeTextColor = UIColor.white
         notificationBtn.badgeEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 2)
-        calendarTableView.bounces = false
+//        calendarTableView.bounces = false
         
-        noDataLabel.text = "No records found  Please select another date"
-        noDataLabel.isHidden = false
+//        noDataLabel.text = "No records found  Please select another date"
+//        noDataLabel.isHidden = false
         //        calendarTableView.isHidden = true
         
-        calendarTableView.delegate = self
-        calendarTableView.dataSource = self
+//        calendarTableView.delegate = self
+//        calendarTableView.dataSource = self
         menu = SideMenuNavigationController(rootViewController: SideMenuViewController())
         menu.leftSide = true
         menu.setNavigationBarHidden(true, animated: true)
@@ -126,24 +141,39 @@ class CalendarViewController: UIViewController, UITableViewDelegate,UITableViewD
         // Do any additional setup after loading the view.
     }
     func action() {
+        pullToRefreshCalled=true
         print("Data reload ")
+        SwiftLoader.show(animated: true)
         self.updateUI()
-        // hitApiGetNotificationCount()
+        
+        self.getNotificatioDetail()
         createCalendar()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.dashboardTableView.spr_endRefreshing()
-        }
+        //        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+        //            self.dashboardTableView.spr_endRefreshing()
+        //        }
     }
     
     private func updateUI(){
         //            calendarTableView.register(UINib(nibName: nibNamed.calendarTVCell, bundle: nil), forCellReuseIdentifier: HomeCellIdentifier.calendarTVCell.rawValue)
-        calendarTableView.delegate = self
-        calendarTableView.dataSource = self
-        calendarTableView.reloadData()
+        dashboardTableView.separatorStyle = .none
+        
+        dashboardTableView.delegate = self
+        dashboardTableView.dataSource = self
+        //        calendarTableView.reloadData()
     }
-    @IBAction func actionReload(_ sender: UIButton) {
-        self.createCalendar()
-    }
+    
+    fileprivate let formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd"
+        return formatter
+    }()
+    
+    
+    //    @IBAction func actionReload(_ sender: UIButton) {
+    //        self.createCalendar()
+    //    }
+    
+    
     
     func createCalendar(){
         
@@ -152,28 +182,38 @@ class CalendarViewController: UIViewController, UITableViewDelegate,UITableViewD
         }
         let calendar = FSCalendar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 300))
         calendar.placeholderType = .none
-        //calendar.appearance.separators = .interRows
         calendar.appearance.caseOptions = FSCalendarCaseOptions.weekdayUsesSingleUpperCase
-        calendar.calendarHeaderView.backgroundColor = #colorLiteral(red: 0.09803921569, green: 0.6156862745, blue: 0.8509803922, alpha: 1)
         calendar.dataSource = self
         calendar.delegate = self
-        calendar.appearance.todayColor = .red
-        calendar.appearance.titleTodayColor = .blue
+        calendar.appearance.titleTodayColor = UIColor.black
         calendar.appearance.headerMinimumDissolvedAlpha = 0.3
+        calendar.appearance.todaySelectionColor = UIColor(hexString: "199DD9")
+        calendar.appearance.selectionColor = UIColor(hexString: "199DD9")
+        calendar.appearance.todayColor = UIColor.white
+        calendar.appearance.titleSelectionColor = UIColor.white
         //        calendar.appearance.separators = .interRows
-        calendar.calendarHeaderView.backgroundColor = UIColor(hexString: "#33A5FF")
+        calendar.calendarHeaderView.backgroundColor = UIColor(hexString: "#199DD9")
+        
+        
+        let tDate = Date()
+        let formatterTest = DateFormatter()
+        formatterTest.dateFormat = "yyyy/MM/dd"
+        print(formatterTest.string(from: tDate))
+        let finalDate = formatterTest.string(from: tDate)
+        
+        calendar.select(self.formatter.date(from: finalDate)!)
         //        calendar.appearance.headerMinimumDissolvedAlpha = (0.8)
+        
         calendar.appearance.headerTitleColor = .white
         self.calenderObject = calendar
         calendar.scope = .month
-        
         // if self.calendarView.subviews.count == 0 {
         self.calendarView.addSubview(calendar)
-        
-        let FirstDate = Date().startOfMonth()
+        let FirstDate = Date()    //.startOfMonth()
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
-        guard let result : String = formatter.string(from: FirstDate!) as String? else { return }
+        
+        guard let result : String = formatter.string(from: FirstDate) as String? else { return }
         print("selected Date -->",result )
         let userId = userDefaults.string(forKey: UserDeafultsString.instance.UserID) ?? ""
         let VendorID = userDefaults.string(forKey: UserDeafultsString.instance.UserID) ?? ""
@@ -352,14 +392,14 @@ class CalendarViewController: UIViewController, UITableViewDelegate,UITableViewD
         if ((sender as AnyObject).isOn == true){
             
             urlSTring = "https://lsp.totallanguage.com/Appointment/GetFormData?methodType=UPDATEAGENTSTATUS&vendoid=\(vID)&status=\(statusAndFlagOn)&flag=1"
-            calendarTableView.delegate = self
-            calendarTableView.dataSource = self
-            noDataLabel.isHidden = true
-            calendarTableView.isHidden = false
+//            dashboardTableView.delegate = self
+//            dashboardTableView.dataSource = self
+//            noDataLabel.isHidden = true
+//            calendarTableView.isHidden = false
             
         }
         else {
-            noDataLabel.isHidden = false
+//            noDataLabel.isHidden = false
             //                calendarTableView.isHidden = true
             urlSTring = "https://lsp.totallanguage.com/Appointment/GetFormData?methodType=UPDATEAGENTSTATUS&vendoid=\(vID)&status=\(statusAndFlagOff)&flag=1"
         }
@@ -384,7 +424,7 @@ class CalendarViewController: UIViewController, UITableViewDelegate,UITableViewD
         })
         
         dataTask.resume()
-        calendarTableView.reloadData()
+        
     }
     
     /*
@@ -418,6 +458,7 @@ extension CalendarViewController :FSCalendarDataSource ,FSCalendarDelegateAppear
         
     }
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
+        
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
         guard let result : String = formatter.string(from: date) as String? else { return nil }
@@ -436,19 +477,32 @@ extension CalendarViewController :FSCalendarDataSource ,FSCalendarDelegateAppear
                     }
                 })
             }
+            
         })
+        //        SwiftLoader.hide()
         print("eventDefaultColorsFor")
         if eventColor.count == 0 {
+            
+            
+            
+            
+            SwiftLoader.hide()
+            
             return nil
             
         }else {
+            //            if pullToRefreshCalled{
+            //                pullToRefreshCalled=false
+            //                self.dashboardTableView.spr_endRefreshing()
+            //            }
+            SwiftLoader.hide()
             return eventColor //[UIColor.green , UIColor.red]
         }
-        
     }
     
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        
         let FirstDate = date.startOfMonth() ?? Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
@@ -457,6 +511,16 @@ extension CalendarViewController :FSCalendarDataSource ,FSCalendarDelegateAppear
         print("selected Date -->",result )
         let userId = userDefaults.string(forKey: "userId") ?? ""
         print("userId is \(userId)")
+        
+        
+        
+        print("SELCTED DATE IS \(date) and today date is \(Date())")
+        
+        
+        
+        
+        
+        
         self.showAppointmentArr.removeAll()
         self.apiScheduleAppointmentResponseModel?.vENDORSCHEDULEDATA?.forEach({ appointmentData in
             let rawDate = appointmentData.startDateTime ?? ""
@@ -469,9 +533,11 @@ extension CalendarViewController :FSCalendarDataSource ,FSCalendarDelegateAppear
             }
         })
         
+        
         print("total appointment for \(selectedDate) are \(self.showAppointmentArr.count)")
         
-        calendarTableView.reloadData()
+        dashboardTableView.reloadData()
+        //        self.dashboardTableView.spr_endRefreshing()fevent
         // self.hitApigetAllScheduleAppointment(date: result, customerId: userId, selectedDate: selectedDate)
     }
     
@@ -617,8 +683,10 @@ class ScheduleTableViewCell : UITableViewCell{
     @IBOutlet var appointmentIDLbl: UILabel!
 }
 
-class ScheduleAppointmentTableViewCell:UITableViewCell{
+class AppointmentTVCell:UITableViewCell{
     
+    @IBOutlet weak var clientVenueTitleView: UIStackView!
+    @IBOutlet weak var clientVenueValueView: UIStackView!
     
     @IBOutlet weak var lineOutlet: UILabel!
     @IBOutlet weak var checkInBtnIcon: UIImageView!
@@ -654,7 +722,10 @@ class ScheduleAppointmentTableViewCell:UITableViewCell{
     @IBOutlet var appointmentTimeLbl: UILabel!
     @IBOutlet var appointmentIDLbl: UILabel!
     override func awakeFromNib() {
+        
+        
         outerView.addShadowGrey()
+        self.selectionStyle = .none
     }
 }
 
@@ -706,7 +777,7 @@ extension CalendarViewController{
         AF.request(urlString, method: .get , parameters: nil, encoding: JSONEncoding.default, headers: nil)
             .validate()
             .responseData(completionHandler: { [self] (response) in
-                SwiftLoader.hide()
+                //                SwiftLoader.hide()
                 switch(response.result){
                     
                 case .success(_):
@@ -718,7 +789,11 @@ extension CalendarViewController{
                         ColourResponse.sharedInstance.apiCalendarDataResponseModel = self.apiScheduleAppointmentResponseModel
                         print("Success")
                         print("SCHEDULE DATA IS \(self.apiScheduleAppointmentResponseModel)")
+                        
                         self.showAppointmentArr.removeAll()
+                        if self.apiScheduleAppointmentResponseModel?.vENDORSCHEDULEDATA?.count==0{
+                            SwiftLoader.hide()
+                        }
                         self.apiScheduleAppointmentResponseModel?.vENDORSCHEDULEDATA?.forEach({ appointmentData in
                             let rawDate = appointmentData.startDateTime ?? ""
                             let newDate = convertDateFormater(rawDate)
@@ -733,8 +808,20 @@ extension CalendarViewController{
                         print("total appointment for \(selectedDate) are \(self.showAppointmentArr.count)")
                         DispatchQueue.main.async {
                             // calendarView.delegate=self
-                            calendarTableView.reloadData()
                             calenderObject.reloadData()
+                            dashboardTableView.reloadData()
+                            
+                            
+                            
+                            
+                            if pullToRefreshCalled{
+                                pullToRefreshCalled=false
+                                self.dashboardTableView.spr_endRefreshing()
+                            }
+                            
+                            SwiftLoader.hide()
+                            
+                            
                         }
                         
                     } catch{
@@ -765,7 +852,7 @@ extension CalendarViewController{
         AF.request(urlString, method: .get , parameters: nil, encoding: JSONEncoding.default, headers: nil)
             .validate()
             .responseData(completionHandler: { [self] (response) in
-                SwiftLoader.hide()
+                //                SwiftLoader.hide()
                 switch(response.result){
                     
                 case .success(_):
@@ -797,7 +884,7 @@ extension CalendarViewController{
 
 extension CalendarViewController{
     func getServiceType(){
-        SwiftLoader.show(animated: true)
+        //        SwiftLoader.show(animated: true)
         
         //Appointment/GetData?methodType=Speciality&CompanyId=55&SpType1=1
         let userId = userDefaults.string(forKey: UserDeafultsString.instance.UserID) ?? ""
@@ -810,7 +897,7 @@ extension CalendarViewController{
         AF.request(urlString, method: .get , parameters: nil, encoding: JSONEncoding.default, headers: nil)
             .validate()
             .responseData(completionHandler: { [self] (response) in
-                SwiftLoader.hide()
+                //                SwiftLoader.hide()
                 switch(response.result){
                     
                 case .success(_):
@@ -851,7 +938,7 @@ extension CalendarViewController{
         AF.request(url, method: .get , parameters: nil, encoding: JSONEncoding.default, headers: nil)
             .validate()
             .responseData(completionHandler: { [self] (response) in
-                SwiftLoader.hide()
+                //                SwiftLoader.hide()
                 switch(response.result){
                     
                 case .success(_):
@@ -869,20 +956,29 @@ extension CalendarViewController{
                             let timeZone = self.apiGoogleTimeZoneresponse?.timeZoneName ?? ""
                             print("current time zone from google", timeZone)
                             let previousTimeZone = userDefaults.string(forKey: "TimeZone") ?? ""
-                            print("previous TimeZone ",previousTimeZone ?? "")
-                            if previousTimeZone.trimmingCharacters(in: .whitespacesAndNewlines) == timeZone {
+                            print("previous TimeZone",previousTimeZone ?? "")
+                            let updatedPTZ = previousTimeZone.replacingOccurrences(of: " ", with: "")
+                            let updateCTZ = timeZone.replacingOccurrences(of: " ", with: "")
+                            print("UPDTEED TIME ZONES ARE \(updatedPTZ) and \(updateCTZ)")
+                            if updatedPTZ == updateCTZ {
                                 
-                            }else {
-                                let vc = storyboard?.instantiateViewController(identifier: "TimeZoneViewController") as! TimeZoneViewController
-                                vc.currentTimeZone = timeZone
-                                vc.timeZoneStr = "Your timezone had appeared to change from \(dateStr) - \(previousTimeZone) to \(dateStr) - \(timeZone)."
-                                vc.modalPresentationStyle = .overFullScreen
-                                self.present(vc, animated: true, completion: nil)
+                            } else {
+                                let tZoneDeclined =   UserDefaults.standard.value(forKey: UserDeafultsString.instance.timeZoneDeclined) as? Bool ?? false
+                                if tZoneDeclined == false {
+                                    let vc = storyboard?.instantiateViewController(identifier: "TimeZoneViewController") as! TimeZoneViewController
+                                    vc.currentTimeZone = timeZone
+                                    vc.timeZoneStr = "Your timezone had appeared to change from \(dateStr) - \(previousTimeZone) to \(dateStr) - \(timeZone)."
+                                    vc.modalPresentationStyle = .overFullScreen
+                                    self.present(vc, animated: true, completion: nil)
+                                }
+                                
+                                
+                                
+                                
+                                
+                                
                             }
-                            
                         }
-                        
-                        
                     } catch{
                         self.view.makeToast("Please try after sometime.",duration: 2, position: .center)
                         print("error block forgot password " ,error)
@@ -918,8 +1014,9 @@ extension CalendarViewController {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // let cell  = tableView.dequeueReusableCell(withIdentifier: HomeCellIdentifier.calendarTVCell.rawValue, for: indexPath) as! CalendarTVCell
-        let cell  = tableView.dequeueReusableCell(withIdentifier: "ScheduleAppointmentTableViewCell", for: indexPath) as! ScheduleAppointmentTableViewCell
+        let cell  = dashboardTableView.dequeueReusableCell(withIdentifier: "AppointmentTVCell", for: indexPath) as! AppointmentTVCell
         let index = showAppointmentArr[indexPath.row]
+        cell.otherOptionsStackView.visibility = .gone
         
         let stringInput = index?.clientName?.trimmingCharacters(in: .whitespaces)
         let abc = stringInput ?? ""
@@ -929,6 +1026,7 @@ extension CalendarViewController {
         for string in stringInputArr {
             stringNeed += String(string.first ?? abcc)
         }
+        
         print(stringNeed)
         
         
@@ -939,7 +1037,13 @@ extension CalendarViewController {
         } else {
             cell.clientNameLbl.text = "N/A"
         }
-        
+        if index?.title?.replacingOccurrences(of: " ", with: "") == "B"{
+            cell.clientVenueTitleView.isHidden=true
+            cell.clientVenueValueView.isHidden=true
+        }else {
+            cell.clientVenueTitleView.isHidden=false
+            cell.clientVenueValueView.isHidden=false
+        }
         
         //        cell.clientNameLbl.text = stringNeed.uppercased()
         //        cell.clientNameLbl.text = index?.clientInitial
@@ -950,7 +1054,7 @@ extension CalendarViewController {
         if index?.sLanguageName != nil && index?.sLanguageName != "" {
             cell.sourceLanguageLbl.text = index?.sLanguageName
         } else {
-            cell.sourceLanguageLbl.text = "N/A"
+            cell.sourceLanguageLbl.text = "English"
         }
         if index?.languageName != nil && index?.languageName != "" {
             cell.targetLanguageLbl.text = index?.languageName
@@ -972,9 +1076,9 @@ extension CalendarViewController {
         
         
         //        cell.targetLanguageLbl.text = index?.targetLanguageName ?? "N/A"
-        cell.startDateLbl.text = index?.startDate ?? "N/A"
+//        cell.startDateLbl.text = index?.startDate ?? "N/A"
         //        cell.venuLbl.text = index?.customerName
-        cell.startDateLbl.text = index?.vendorJobType ?? "N/A"
+//        cell.startDateLbl.text = index?.vendorJobType ?? "N/A"
         
         //        cell.venuLbl.text = index?.customerName ?? "N/A"
         // cell.interpreterLbl.text = index.interpretorName
@@ -982,9 +1086,13 @@ extension CalendarViewController {
         //        cell.sourceLanguageLbl.text = index?.sLanguageName
         //        cell.targetLanguageLbl.text = index?.targetLanguageName
         //        cell.venueNewLbl.text = index?.venueName
-        cell.venuLbl.text = index?.venueName
+        //        cell.venuLbl.text = index?.venueName
         
-        cell.startDateLbl.text = index?.appointmentStatusType ?? ""
+        
+        
+        
+        
+//        cell.startDateLbl.text = index?.appointmentStatusType ?? ""
         let dateValue = index?.startDateTime ?? ""
         let timeValue = convertDateAndTimeFormat(dateValue)
         //        cell.sourceLanguageLbl.text = timeValue
@@ -1019,32 +1127,36 @@ extension CalendarViewController {
         
         let rawTime = index?.startDateTime ?? ""
         let newTime = convertTimeFormater(rawTime)
-        let newDate = convertTimeFormaterOnlyDate(rawTime)
-        cell.startDateLbl.text = newDate
+        let endTimee = convertTimeFormater(index?.endDateTime ?? "")
+//        let newDate = convertTimeFormaterOnlyDate(rawTime)
+//        cell.startDateLbl.text = newDate
         cell.appointmentTimeLbl.text = newTime
+        cell.startDateLbl.text = newTime
+        cell.venuLbl.text = endTimee
         //        cell.venuLbl.text = newTime
-        
+        cell.venueLbl.text = index?.venueName ?? ""
+        cell.venueLbl.removeEmptyString()
         if index?.appointmentType == "Onsite Interpretation"
         {
             //            cell.venueTitleLbl.isHidden = false
             //            cell.venueLbl.isHidden = false
-            cell.venTitleLbl.isHidden = false
-            cell.venuLbl.isHidden = false
+            //            cell.venTitleLbl.isHidden = false
+            //            cell.venueLbl.isHidden = false
             
             
             cell.lineOutlet.visibility = .visible
-            cell.otherOptionsStackView.visibility = .visible
-            cell.otherOptionsStackView.distribution = .fillEqually
-            cell.otherOptionsStackView.spacing = 5.0
+//            cell.otherOptionsStackView.visibility = .visible
+//            cell.otherOptionsStackView.distribution = .fillEqually
+//            cell.otherOptionsStackView.spacing = 5.0
             
             
             if index?.appointmentStatusType ==
                 "BOOKED"{
                 cell.lineOutlet.visibility = .visible
-                cell.otherOptionsStackView.visibility = .visible
+//                cell.otherOptionsStackView.visibility = .visible
             }else {
                 cell.lineOutlet.visibility = .gone
-                cell.otherOptionsStackView.visibility = .gone
+//                cell.otherOptionsStackView.visibility = .gone
             }
             
             
@@ -1056,10 +1168,10 @@ extension CalendarViewController {
             if index?.appointmentStatusType ==
                 "BOOKED"{
                 cell.lineOutlet.visibility = .visible
-                cell.otherOptionsStackView.visibility = .visible
+//                cell.otherOptionsStackView.visibility = .visible
             }else {
                 cell.lineOutlet.visibility = .gone
-                cell.otherOptionsStackView.visibility = .gone
+//                cell.otherOptionsStackView.visibility = .gonfe
             }
         }
         else {
@@ -1068,10 +1180,19 @@ extension CalendarViewController {
             cell.lineOutlet.visibility = .gone
             cell.venTitleLbl.isHidden = true
             cell.venuLbl.isHidden = true
-            cell.otherOptionsStackView.visibility = .gone
+//            cell.otherOptionsStackView.visibility = .gone
         }
         
+        cell.plusBtn.addTarget(self, action: #selector(openDialog(sender:)), for: .touchUpInside)
+        cell.cameraBtn.addTarget(self, action: #selector(openDialog(sender:)), for: .touchUpInside)
+        cell.checkInBtn.addTarget(self, action: #selector(openDialog(sender:)), for: .touchUpInside)
+        cell.documentBtn.addTarget(self, action: #selector(openDialog(sender:)), for: .touchUpInside)
+        
         return cell
+    }
+    
+    @objc func openDialog(sender: UIButton){
+        self.openDialogBox()
     }
     
     func convertDateAndTimeFormat(_ date: String) -> String
@@ -1095,13 +1216,45 @@ extension CalendarViewController {
          self.navigationController?.pushViewController(vc, animated: true)
          */
         //        Temporary
+        
+//        AppointmentTVCell
+        let cell = dashboardTableView.cellForRow(at: IndexPath(row: indexPath.row, section: 0)) as! AppointmentTVCell
+    
+        let sTime = cell.startDateLbl.text
+        let eTime = cell.venuLbl.text
+        
         print("TYPE STATUS IS \(self.showAppointmentArr[indexPath.row]?.title)")
         if self.showAppointmentArr[indexPath.row]?.title?.replacingOccurrences(of: " ", with: "") == "B"{
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "BlockedAppointmentVC") as! BlockedAppointmentVC
-            vc.appointmentID = self.showAppointmentArr[indexPath.row]?.appointmentID ?? 0
-            vc.modalPresentationStyle = .fullScreen
-            self.present(vc, animated: true, completion: nil)
-
+            
+            if self.showAppointmentArr[indexPath.row]?.appointmentType == "Onsite Interpretation" || self.showAppointmentArr[indexPath.row]?.appointmentType == "ONSITE INTERPRTATION"{
+                let vc =   self.storyboard?.instantiateViewController(withIdentifier: "BlockedAppointmentVC") as! BlockedAppointmentVC
+                vc.appointmentID = self.showAppointmentArr[indexPath.row]?.appointmentID ?? 0
+                
+                vc.startTime = sTime ?? ""
+                vc.endTime = eTime ?? ""
+                vc.modalPresentationStyle = .fullScreen
+                self.present(vc, animated: true, completion: nil)
+            }
+            else if self.showAppointmentArr[indexPath.row]?.appointmentType == "Telephone Conference" || self.showAppointmentArr[indexPath.row]?.appointmentType == "TELEPHONE CONFERENCE"{
+                let vc =   self.storyboard?.instantiateViewController(withIdentifier: "BlockedAppointmentTelephonicConferenceDetails") as! BlockedAppointmentTelephonicConferenceDetails
+                vc.appointmentID = self.showAppointmentArr[indexPath.row]?.appointmentID ?? 0
+                
+                vc.startTime = sTime ?? ""
+                vc.endTime = eTime ?? ""
+                vc.modalPresentationStyle = .fullScreen
+                self.present(vc, animated: true, completion: nil)
+            }else if self.showAppointmentArr[indexPath.row]?.appointmentType == "Virtual Meeting" || self.showAppointmentArr[indexPath.row]?.appointmentType == "VIRTUAL MEETING"{
+                
+                let vc =   self.storyboard?.instantiateViewController(withIdentifier: "BlockedAppointmentVirtualMeetingDetails") as! BlockedAppointmentVirtualMeetingDetails
+                vc.appointmentID = self.showAppointmentArr[indexPath.row]?.appointmentID ?? 0
+                
+                vc.startTime = sTime ?? ""
+                vc.endTime = eTime ?? ""
+                vc.modalPresentationStyle = .fullScreen
+                self.present(vc, animated: true, completion: nil)
+            }else {
+                return
+            }
         }else {
             if self.showAppointmentArr[indexPath.row]?.appointmentType == "Onsite Interpretation" || self.showAppointmentArr[indexPath.row]?.appointmentType == "ONSITE INTERPRTATION" {
                 let vc = self.storyboard?.instantiateViewController(identifier: "NewAppointmentDetailsVC") as! NewAppointmentDetailsVC
@@ -1110,23 +1263,23 @@ extension CalendarViewController {
                 self.navigationController?.pushViewController(vc, animated: true)
             }else if self.showAppointmentArr[indexPath.row]?.appointmentType == "Telephone Conference" || self.showAppointmentArr[indexPath.row]?.appointmentType == "TELEPHONE CONFERENCE" || self.showAppointmentArr[indexPath.row]?.appointmentType == "Virtual Meeting" || self.showAppointmentArr[indexPath.row]?.appointmentType == "VIRTUAL MEETING" {
                 
-                let vc = self.storyboard?.instantiateViewController(identifier: "NewAppointmentDetailsVC") as! NewAppointmentDetailsVC
+                let vc = self.storyboard?.instantiateViewController(identifier: "TelephoneConferenceDetailsVC") as! TelephoneConferenceDetailsVC
                 vc.appointmentID = self.showAppointmentArr[indexPath.row]?.appointmentID ?? 0
                 vc.serviceType = self.showAppointmentArr[indexPath.row]?.appointmentType ?? "N/A"
                 self.navigationController?.pushViewController(vc, animated: true)
             } else {
-                
-                let vc = self.storyboard?.instantiateViewController(identifier: "ScheduleDetailsVC") as! ScheduleDetailsVC
-                vc.appointmentID = self.showAppointmentArr[indexPath.row]?.appointmentID ?? 0
-                vc.serviceType = self.showAppointmentArr[indexPath.row]?.appointmentType ?? "N/A"
-                print("vc.serviceType ", vc.serviceType)
-                self.navigationController?.pushViewController(vc, animated: true)
+                return
+//                let vc = self.storyboard?.instantiateViewController(identifier: "ScheduleDetailsVC") as! ScheduleDetailsVC
+//                vc.appointmentID = self.showAppointmentArr[indexPath.row]?.appointmentID ?? 0
+//                vc.serviceType = self.showAppointmentArr[indexPath.row]?.appointmentType ?? "N/A"
+//                print("vc.serviceType ", vc.serviceType)
+//                self.navigationController?.pushViewController(vc, animated: true)
                 
             }
         }
         
         
-       
+        
         
         
         
@@ -1139,11 +1292,13 @@ extension CalendarViewController {
         let countt = self.showAppointmentArr.count  ?? 0
         print("number of rows are \(self.showAppointmentArr.count  ?? 0)")
         if countt == 0 {
-            self.noDataLabel.isHidden = false
-            self.calendarTableView.isHidden = true
+            dashboardTableView.setEmptyView(title: "", message: "No Data Found")
+//            self.noDataLabel.isHidden = false
+//            self.calendarTableView.isHidden = true
         }else {
-            self.noDataLabel.isHidden = true
-            self.calendarTableView.isHidden = false
+            dashboardTableView.restore()
+//            self.noDataLabel.isHidden = true
+//            self.calendarTableView.isHidden = false
         }
         return countt
     }
@@ -1170,7 +1325,7 @@ extension CalendarViewController{
         AF.request(urlString, method: .post , parameters: parameters, encoding: JSONEncoding.default, headers: nil)
             .validate()
             .responseData(completionHandler: { (response) in
-                SwiftLoader.hide()
+                //                SwiftLoader.hide()
                 switch(response.result){
                     
                 case .success(_):
@@ -1203,7 +1358,7 @@ extension CalendarViewController{
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                                         print("UPDATE DEVICE TOKEN")
                                         
-//                                        self.hitLogoutApi()
+                                        self.hitLogoutApi()
                                     }
                                 }else {
                                     // user is not login on another device
@@ -1267,7 +1422,7 @@ extension CalendarViewController{
                             print("----- HITBOOKINGSLOTSSSS SUCCESSFUL----- ")
                             
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change
-                                SwiftLoader.hide()
+                                //                                SwiftLoader.hide()
                                 UserDefaults.standard.setValue(false, forKey: "isLoggedIn")
                                 let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
                                 let storyboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -1295,9 +1450,45 @@ extension CalendarViewController{
                 }
             }
     }
+}
+
+extension CalendarViewController{
     
-    
-    
+    func getNotificatioDetail(){
+        SwiftLoader.show(animated: true)
+        self.apiNotificationCountNewResponseModel = nil
+        let userId = UserDefaults.standard.value(forKey: UserDeafultsString.instance.UserID) ?? "0"
+        let companyID = UserDefaults.standard.value(forKey: UserDeafultsString.instance.CompanyID) ?? "0"
+ 
+        let urlString = "https://lsp.totallanguage.com/Home/GetData?methodType=NotificationsCounts%2CNOTIFICATIONSCOUNTSSTAFF%2CGETSYSTEMADMINNOTIFICATION&UserID=\(userId)&CompanyId=\(companyID)"
+        print("url to get notificationDetail  \(urlString)")
+        AF.request(urlString, method: .get , parameters: nil, encoding: JSONEncoding.default, headers: nil)
+            .validate()
+            .responseData(completionHandler: { [self] (response) in
+                //                        SwiftLoader.hide()
+                switch(response.result){
+                case .success(_):
+                    print("Respose Success Notification Data ")
+                    guard let daata = response.data else { return }
+                    do {
+                        let jsonDecoder = JSONDecoder()
+                        self.apiNotificationCountNewResponseModel = try jsonDecoder.decode(ApiNotificationCountNewResponseModel.self, from: daata)
+                        print("Success notification Model \(self.apiNotificationCountNewResponseModel)")
+                        
+                        let count = self.apiNotificationCountNewResponseModel?.nOTIFICATIONSCOUNTSSTAFF?.first?.notificationCounts ?? 0
+                        
+                        self.notificationBtn.badgeString = String(count)
+                    } catch{
+                        
+                        print("error block notification Data  " ,error)
+                    }
+                    
+                case .failure(_):
+                    print("Respose Failure ")
+                    
+                }
+            })
+    }
 }
 
 
@@ -1387,7 +1578,6 @@ class ColourResponse{
     
     static var sharedInstance = ColourResponse()
     var apiCalendarDataResponseModel:ApiCalendarDataResponseModel?
-    
 }
 
 struct ApiGoogleTimeZoneresponse : Codable {
@@ -1414,5 +1604,18 @@ struct ApiGoogleTimeZoneresponse : Codable {
         timeZoneId = try values.decodeIfPresent(String.self, forKey: .timeZoneId)
         timeZoneName = try values.decodeIfPresent(String.self, forKey: .timeZoneName)
     }
+}
+
+
+class ContentSizedTableView: UITableView {
+    override var contentSize:CGSize {
+        didSet {
+            invalidateIntrinsicContentSize()
+        }
+    }
     
+    override var intrinsicContentSize: CGSize {
+        layoutIfNeeded()
+        return CGSize(width: UIView.noIntrinsicMetric, height: contentSize.height)
+    }
 }

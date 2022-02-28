@@ -66,7 +66,7 @@ struct ApiGetVendorDetailsApiResponseModelInterpreterData : Codable {
 	let perHourFee : String?
 	let startDateTime : String?
 	let designedDueDate : String?
-	let notoficationId : String?
+//	let notoficationId : String?
 	let endDateTime : String?
 	let userColor : String?
 	let decspt : Bool?
@@ -408,7 +408,7 @@ struct ApiGetVendorDetailsApiResponseModelInterpreterData : Codable {
 		case perHourFee = "perHourFee"
 		case startDateTime = "StartDateTime"
 		case designedDueDate = "DesignedDueDate"
-		case notoficationId = "NotoficationId"
+//		case notoficationId = "NotoficationId"
 		case endDateTime = "EndDateTime"
 		case userColor = "userColor"
 		case decspt = "decspt"
@@ -751,7 +751,7 @@ struct ApiGetVendorDetailsApiResponseModelInterpreterData : Codable {
 		perHourFee = try values.decodeIfPresent(String.self, forKey: .perHourFee)
 		startDateTime = try values.decodeIfPresent(String.self, forKey: .startDateTime)
 		designedDueDate = try values.decodeIfPresent(String.self, forKey: .designedDueDate)
-		notoficationId = try values.decodeIfPresent(String.self, forKey: .notoficationId)
+//		notoficationId = try values.decodeIfPresent(String.self, forKey: .notoficationId)
 		endDateTime = try values.decodeIfPresent(String.self, forKey: .endDateTime)
 		userColor = try values.decodeIfPresent(String.self, forKey: .userColor)
 		decspt = try values.decodeIfPresent(Bool.self, forKey: .decspt)

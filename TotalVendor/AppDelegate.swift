@@ -19,7 +19,7 @@ import TwilioVideo
 
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate, CXProviderDelegate {
     
-    
+    var backgroundSessionCompletionHandler: (() -> Void)?
     let start = Date()
     
     var customerName = ""
@@ -32,7 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var sourceLid = 0
     var patientname = ""
     var patientno = 0
-    
     var screenTime = 0
     var screenTimeCount = 0
     var roomName = 0
@@ -103,7 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                  UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).overrideUserInterfaceStyle = .light
              }
       print("LOGG IN DEFAULT VALUE IS \(UserDefaults.standard.value(forKey: "isLoggedIn") as? Bool ?? false)")
-        /*
+        
         if UserDefaults.standard.value(forKey: "isLoggedIn") as? Bool ?? false == true{
             
                 let storyboard : UIStoryboard = UIStoryboard(name:"Main", bundle: nil)
@@ -123,7 +122,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                                      appDelegate.window!.rootViewController = navigationController
                                      appDelegate.window!.makeKeyAndVisible()
         }
-        */
+       
       
         
         
@@ -226,7 +225,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             
             if type != nil {
                // let dict = convertToDictionary(text: payload!)
-                /*
+         
                 if type == "tokenupdate" {
 //                    if isLogoutPressed {
 //                        isLogoutPressed = false
@@ -250,7 +249,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     
                 }
                 
-                */
+             
             }
         }
     

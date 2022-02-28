@@ -90,7 +90,7 @@ class BookingDetailViewController: UIViewController {
         let userId = UserDefaults.standard.value(forKey: UserDeafultsString.instance.UserID) ?? "0"
         //let companyID = UserDefaults.standard.value(forKey: UserDeafultsString.instance.CompanyID) ?? "0"
       
-        let urlString = "https://lsp.totallanguage.com/Home/GetData?methodType=AppointmentInterpreterData&NotoficationId=0&AppointmentID=\(self.appointmentID)&Interpreterid=\(userId)&UserType=Vendor&Userid=\(userId)"
+        let urlString = "https://lsp.totallanguage.com/Home/GetData?methodType=AppointmentInterpreterData&NotoficationId=0&AppointmentID=\(self.appointmentID)&Interpreterid=\(userId)&UserType=6&Userid=\(userId)"
         print("url to get notificationDetail  \(urlString)")
                 AF.request(urlString, method: .get , parameters: nil, encoding: JSONEncoding.default, headers: nil)
                     .validate()

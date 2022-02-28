@@ -56,6 +56,8 @@ class VendorDetailViewController: UIViewController {
     @IBOutlet weak var nickNameView: UIView!
     @IBOutlet weak var socialSecurityNumberTF: UITextField!
     @IBOutlet weak var stepIndicatorView: StepIndicatorView!
+    @IBOutlet weak var companyLogo: UIImageView!
+    @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var fullNameouterView: UIView!
     @IBOutlet weak var emailOuterView: UIView!
     @IBOutlet weak var nextBtn: UIButton!
@@ -82,6 +84,17 @@ class VendorDetailViewController: UIViewController {
     var apiVendorDetailResponseModel:ApiVendorDetailResponseModel?
     override func viewDidLoad() {
         super.viewDidLoad()
+        let imageDataa = (userDefaults.value(forKey: UserDeafultsString.instance.CompanyLogo) ?? "")
+        let finalDataa = "\(Live_BASE_URL)\(imageDataa)"
+        print("FINAL DATA IS \(finalDataa)")
+        if imageDataa as! String != "" {
+            self.companyLogo.sd_setImage(with: URL(string: finalDataa), completed: nil)
+        }else {
+            self.companyLogo.image = UIImage(named: "logo")         
+        }
+
+        userNameLabel.text = UserDefaults.standard.value(forKey: UserDeafultsString.instance.CompanyName) as? String ?? ""
+        
         
         print("IMAGE DATA IS \(userDefaults.value(forKey: UserDeafultsString.instance.USER_IMAGEDATA) ?? "")")
         let imageData = (userDefaults.value(forKey: UserDeafultsString.instance.USER_IMAGEDATA) ?? "")

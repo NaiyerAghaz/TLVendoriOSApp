@@ -80,10 +80,6 @@ extension ChatScreenViewController:UITableViewDelegate,UITableViewDataSource{
         default:
             return UITableViewCell()
         }
-        
-        
-        
-  
     }
     
     
